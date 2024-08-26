@@ -12,8 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @AllArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
@@ -24,7 +22,7 @@ public class UserService implements UserDetailsService {
             throw new UserException("Error: User already exists");
 
         return usersRepository.save(users);
-    };
+    }
 
     public Iterable<Users> FindAllUsers() throws UserException {
         Iterable<Users> users = usersRepository.findAll();
@@ -54,6 +52,8 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UserException("Can't find the user with this ID to delete"));
 
         usersRepository.delete(existingUser);
+
+        return existingUser;
     }
 
     @Override
