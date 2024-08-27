@@ -14,12 +14,15 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class    UserService implements UserDetailsService {
+public class UserService implements UserDetailsService {
     private final UsersRepository usersRepository;
 
     public Users CreateUser(Users users) throws UserException {
-        if (usersRepository.findByUsername(users.getEmail()).isPresent())
-            throw new UserException("Error: User already exists");
+        if (usersRepository.findByEmail(users.getEmail()).isPresent())
+            throw new UserException("Error: Email already exists");
+
+        if(usersRepository.findByUsername(users.getUsername()).isPresent())
+            throw new UserException("Error: Someone use this email");
 
         return usersRepository.save(users);
     }
