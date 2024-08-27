@@ -5,11 +5,13 @@ import com.gui.api_gameslib.Repositories.UsersRepository;
 import com.gui.api_gameslib.UserAuthenticated;
 import com.gui.api_gameslib.exceptions.UserException;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -17,12 +19,17 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
     private final UsersRepository usersRepository;
 
+    private PasswordEncoder passwordEncoder;
+
+    @Transactional
     public Users CreateUser(Users users) throws UserException {
         if (usersRepository.findByEmail(users.getEmail()).isPresent())
             throw new UserException("Error: Email already exists");
 
         if(usersRepository.findByUsername(users.getUsername()).isPresent())
             throw new UserException("Error: Someone use this email");
+
+        users.setPassword(passwordEncoder.encode(users.getPassword()));
 
         return usersRepository.save(users);
     }
