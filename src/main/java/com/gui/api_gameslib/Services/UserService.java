@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class UserService implements UserDetailsService {
+public class    UserService implements UserDetailsService {
     private final UsersRepository usersRepository;
 
     public Users CreateUser(Users users) throws UserException {
@@ -40,9 +40,9 @@ public class UserService implements UserDetailsService {
         Users existingUser = usersRepository.findById(id)
                 .orElseThrow(() -> new UserException("Can't found the user with this id to update"));
 
-        if (users.getUsername() != null) users.setUsername(users.getUsername());
-
-        if (users.getPassword() != null) users.setPassword(users.getPassword());
+        if (users.getUsername() != null) existingUser.setUsername(users.getUsername());
+        if (users.getEmail() != null) existingUser.setEmail(users.getEmail());
+        if (users.getPassword() != null) existingUser.setPassword(users.getPassword());
 
         return usersRepository.save(existingUser);
     }
