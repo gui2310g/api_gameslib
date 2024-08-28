@@ -1,7 +1,6 @@
 package com.gui.api_gameslib.Models;
 
 import jakarta.persistence.*;
-
 import lombok.Data;
 
 import java.util.List;
@@ -23,14 +22,25 @@ public class Games {
     private String released;
     @Column(name = "background_image")
     private String background_image;
-    @Column(name = "background_image_additional")
-    private String background_image_additional;
+    @Column(name = "image_logo")
+    private String image_logo;
     @Column(name = "rating")
     private Integer rating;
     @Column(name = "screenshots_count")
     private Integer screenshots_count;
-    @Column(name = "movies_count")
-    private Integer movies_count;
-    @Column(name = "platforms")
-    private List<String> platforms;
+
+    @OneToMany(mappedBy = "game")
+    private List<Platforms> platforms;
+
+    @OneToMany(mappedBy = "game")
+    private List<EsrbRating> esrbRatings;
+
+    @OneToMany(mappedBy = "game")
+    private List<Screenshots> Screenshots;
+
+    @OneToMany(mappedBy = "game")
+    private List<Genres> Genres;
+
+    @OneToMany(mappedBy = "game")
+    private List<Publishers> publishers;
 }

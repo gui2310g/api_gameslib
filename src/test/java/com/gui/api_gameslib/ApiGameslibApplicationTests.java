@@ -16,6 +16,8 @@ class ApiGameslibApplicationTests {
 	@Autowired
 	private DataSource dataSource;
 
+	public String email;
+	public String password;
 	@Test
 	void TestPostreSQLConnected() {
 		try (Connection connection = dataSource.getConnection()) {
@@ -26,4 +28,8 @@ class ApiGameslibApplicationTests {
 		}
 	}
 
+	@Test
+	void CreatingOneUser() {
+
+	}
 }
