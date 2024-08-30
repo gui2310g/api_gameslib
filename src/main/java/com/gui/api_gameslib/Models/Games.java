@@ -16,7 +16,7 @@ public class Games {
     private String slug;
     @Column(name = "name")
     private String name;
-    @Column(name = "description")
+    @Column(name = "description", length = 1000)
     private String description;
     @Column(name = "released")
     private String released;
@@ -26,9 +26,7 @@ public class Games {
     private String image_logo;
     @Column(name = "rating")
     private Integer rating;
-    @Column(name = "screenshots_count")
-    private Integer screenshots_count;
-
+    
     @OneToMany(mappedBy = "game")
     private List<Platforms> platforms;
 
