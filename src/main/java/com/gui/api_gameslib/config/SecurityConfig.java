@@ -33,7 +33,7 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/users/**", "/games/**")
+                        auth -> auth.requestMatchers("/users/**", "/games/**", "/platforms/**")
                                 .permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())

@@ -17,12 +17,6 @@ public class Platforms {
 
     @Column(name = "name")
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "game_id")
-    private Games game;
-
-    @Column(name = "released_at")
-    private String releasedAt;
-
+    
+    public Platforms(){}
 }

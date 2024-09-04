@@ -1,9 +1,11 @@
 package com.gui.api_gameslib.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -26,9 +28,14 @@ public class Games {
     private String image_logo;
     @Column(name = "rating")
     private Integer rating;
-    
-    @OneToMany(mappedBy = "game")
-    private List<Platforms> platforms;
+
+    @ManyToMany
+    @JoinTable(
+            name = "game_platforms",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "platform_id")
+    )
+    private Set<Platforms> platforms;
 
     @OneToMany(mappedBy = "game")
     private List<EsrbRating> esrbRatings;

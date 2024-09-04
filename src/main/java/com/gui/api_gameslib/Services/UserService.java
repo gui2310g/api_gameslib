@@ -36,8 +36,10 @@ public class UserService implements UserDetailsService {
 
     public Iterable<Users> FindAllUsers() throws UserException {
         Iterable<Users> users = usersRepository.findAll();
+
         if(!users.iterator().hasNext()) throw new UserException("There is no registered Users");
-        return usersRepository.findAll();
+
+        return users;
     }
 
     public Users FindUserById(Integer id) throws UserException {
@@ -53,6 +55,7 @@ public class UserService implements UserDetailsService {
         if (users.getUsername() != null) existingUser.setUsername(users.getUsername());
         if (users.getEmail() != null) existingUser.setEmail(users.getEmail());
         if (users.getPassword() != null)  existingUser.setPassword(passwordEncoder.encode(users.getPassword()));
+
         return usersRepository.save(existingUser);
     }
 

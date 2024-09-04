@@ -15,6 +15,6 @@ public class AuthenticationController {
 
     @GetMapping("/")
     public String authenticate() {
-        return "fds";
+        return "";
     }
 }
