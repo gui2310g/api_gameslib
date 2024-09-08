@@ -1,11 +1,14 @@
 package com.gui.api_gameslib.Repositories;
 
+
 import com.gui.api_gameslib.Models.Games;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface GamesRepository extends CrudRepository<Games, String> {
 
     Optional<Games> findById(Integer id);
@@ -14,13 +17,4 @@ public interface GamesRepository extends CrudRepository<Games, String> {
 
     List<Games> findByNameContainingIgnoreCase(String name);
 
-     List<Games> findPublishersById(Integer publishersId);
-
-    List<Games> findEsrbRatingsById(Integer esrbRatingsId);
-
-    List<Games> findGenresById(Integer genresId);
-
-    List<Games> findPlatformsById(Integer platformsId);
-
-    List<Games> findScreenshotsById(Integer ScreenshotsId);
 }

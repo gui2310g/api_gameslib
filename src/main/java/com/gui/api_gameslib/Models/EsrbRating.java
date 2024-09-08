@@ -17,7 +17,5 @@ public class EsrbRating {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "game_id")
-    private Games game;
+    public EsrbRating(){}
 }

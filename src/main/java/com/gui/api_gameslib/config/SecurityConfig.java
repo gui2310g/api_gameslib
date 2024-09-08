@@ -33,8 +33,12 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/users/**", "/games/**", "/platforms/**")
-                                .permitAll()
+                        auth -> auth.requestMatchers(
+                                "/users/**",
+                                        "/games/**",
+                                        "/platforms/**",
+                                        "/ratings/**"
+                                ).permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(conf -> conf.jwt(Customizer.withDefaults()));

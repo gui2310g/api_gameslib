@@ -31,10 +31,4 @@ public class PlatformsController {
     public Iterable<Platforms> findAllPlatforms() {
         return platformsService.findAllPlatforms();
     }
-    @GetMapping("/find/{id}")
-    public Platforms findPlatformById(@PathVariable  Integer id) {
-        return platformsService.findPlatformsById(id);
-    }
-
-
 }

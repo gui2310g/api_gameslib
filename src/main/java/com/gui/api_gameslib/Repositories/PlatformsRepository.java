@@ -9,9 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface PlatformsRepository extends CrudRepository<Platforms, String> {
-
     Optional <Platforms> findById(Integer id);
-
 
     Optional<Platforms> findByName(String name);
 }
