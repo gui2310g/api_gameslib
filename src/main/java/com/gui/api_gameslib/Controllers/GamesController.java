@@ -2,9 +2,11 @@ package com.gui.api_gameslib.Controllers;
 
 import com.gui.api_gameslib.Models.Games;
 import com.gui.api_gameslib.Services.GamesService;
+import org.apache.coyote.Response;
 import org.hibernate.Internal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,23 +19,26 @@ public class GamesController {
     private GamesService gamesService;
 
     @PostMapping("/add")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Games AddGames(@RequestBody Games games) {
-        return gamesService.AddGames(games);
+    public ResponseEntity<Games> AddGames(@RequestBody Games games) {
+        Games addedGame = gamesService.AddGames(games);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedGame);
     }
 
     @GetMapping("/findAll")
-    public Iterable<Games> FindAllGames() {
-        return gamesService.FindAllGames();
+    public ResponseEntity<Iterable<Games>> FindAllGames() {
+        Iterable<Games> games = gamesService.FindAllGames();
+        return ResponseEntity.ok(games);
     }
 
     @GetMapping("/find/{id}")
-    public Games FindGamesById(@PathVariable Integer id) {
-        return gamesService.FindGamesById(id);
+    public ResponseEntity<Games> FindGamesById(@PathVariable Integer id) {
+        Games game = gamesService.FindGamesById(id);
+        return ResponseEntity.ok(game);
     }
 
     @GetMapping("/search")
-    public List<Games> SearchGames(@RequestParam String name) {
-        return gamesService.SearchGames(name);
+    public ResponseEntity<List<Games>> SearchGames(@RequestParam String name) {
+        List<Games> games = gamesService.SearchGames(name);
+        return ResponseEntity.ok(games);
     }
 }
