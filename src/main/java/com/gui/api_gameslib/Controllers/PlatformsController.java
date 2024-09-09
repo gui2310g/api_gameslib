@@ -4,6 +4,7 @@ import com.gui.api_gameslib.Models.Platforms;
 import com.gui.api_gameslib.Services.PlatformsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,21 +15,21 @@ public class PlatformsController {
     public PlatformsService platformsService;
 
     @PostMapping("/add")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Platforms AddPlatforms(@RequestBody Platforms platforms) {
-        return platformsService.addPlatform(platforms);
+    public ResponseEntity<Platforms> AddPlatforms(@RequestBody Platforms platforms) {
+        Platforms addedPlatforms = platformsService.addPlatform(platforms);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedPlatforms);
     }
 
     @PostMapping("/add/{gameId}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Platforms addPlatformToGame(@RequestBody Platforms platforms, @PathVariable Integer gameId) {
+    public ResponseEntity<Platforms> addPlatformToGame(@RequestBody Platforms platforms, @PathVariable Integer gameId) {
         String platformName = platforms.getName();
-
-        return platformsService.addPlatformToGame(platformName, gameId);
+        Platforms addedPlatformsToGame = platformsService.addPlatformToGame(platformName, gameId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedPlatformsToGame);
     }
 
     @GetMapping("/find")
-    public Iterable<Platforms> findAllPlatforms() {
-        return platformsService.findAllPlatforms();
+    public ResponseEntity<Iterable<Platforms>> findAllPlatforms() {
+        Iterable<Platforms> platforms = platformsService.findAllPlatforms();
+        return ResponseEntity.ok(platforms);
     }
 }

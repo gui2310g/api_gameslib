@@ -2,8 +2,6 @@ package com.gui.api_gameslib.Controllers;
 
 import com.gui.api_gameslib.Models.Games;
 import com.gui.api_gameslib.Services.GamesService;
-import org.apache.coyote.Response;
-import org.hibernate.Internal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
