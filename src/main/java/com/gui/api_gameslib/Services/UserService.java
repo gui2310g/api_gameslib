@@ -5,7 +5,6 @@ import com.gui.api_gameslib.Repositories.UsersRepository;
 import com.gui.api_gameslib.UserAuthenticated;
 import com.gui.api_gameslib.exceptions.UserException;
 
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,13 +20,12 @@ public class UserService implements UserDetailsService {
 
     private PasswordEncoder passwordEncoder;
 
-    @Transactional
     public Users CreateUser(Users users) throws UserException {
         if (usersRepository.findByEmail(users.getEmail()).isPresent())
-            throw new UserException("Error: Email already exists");
+            throw new UserException("Email already exists");
 
         if(usersRepository.findByUsername(users.getUsername()).isPresent())
-            throw new UserException("Error: Someone use this email");
+            throw new UserException("Someone use this username");
 
         users.setPassword(passwordEncoder.encode(users.getPassword()));
 
@@ -51,6 +49,13 @@ public class UserService implements UserDetailsService {
     public Users updateUser(Users users, Integer id) throws UserException {
         Users existingUser = usersRepository.findById(id)
                 .orElseThrow(() -> new UserException("Can't found the user with this id to update"));
+
+        if(usersRepository.findByEmail(users.getEmail()).isPresent()
+                || usersRepository.findByUsername(users.getUsername()).isPresent()
+        ) throw new UserException("Can't update to this email or username because someone is using");
+
+        if (users.getPassword() != null && passwordEncoder.matches(users.getPassword(), existingUser.getPassword()))
+            throw new UserException("You are already using this password");
 
         if (users.getUsername() != null) existingUser.setUsername(users.getUsername());
         if (users.getEmail() != null) existingUser.setEmail(users.getEmail());
