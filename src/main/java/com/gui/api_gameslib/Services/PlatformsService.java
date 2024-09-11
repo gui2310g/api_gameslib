@@ -17,7 +17,11 @@ public class PlatformsService {
 
     private final GamesRepository gamesRepository;
 
-    public Platforms addPlatform(Platforms platforms) {
+    public Platforms addPlatform(Platforms platforms) throws GamesException{
+
+        if(platformsRepository.findByName(platforms.getName()).isPresent())
+            throw new GamesException("Platform with this name already exists");
+
         return platformsRepository.save(platforms);
     }
 
@@ -27,6 +31,9 @@ public class PlatformsService {
 
         Platforms platform = platformsRepository.findByName(platformName)
                 .orElseThrow(() -> new GamesException("Platform not found with name: " + platformName));
+
+        if (game.getPlatforms().stream().anyMatch(p -> p.getName().equals(platformName)))
+            throw new Error("This platform is already added in this game");
 
         game.getPlatforms().add(platform);
         gamesRepository.save(game);
