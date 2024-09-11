@@ -2,12 +2,8 @@ package com.gui.api_gameslib.Services;
 
 import com.gui.api_gameslib.Models.Games;
 import com.gui.api_gameslib.Repositories.GamesRepository;
-import com.gui.api_gameslib.Repositories.UsersRepository;
 import com.gui.api_gameslib.exceptions.GamesException;
-import com.gui.api_gameslib.exceptions.UserException;
 import lombok.AllArgsConstructor;
-import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +15,10 @@ public class GamesService {
     private final GamesRepository gamesRepository;
 
     public Games AddGames(Games games) throws GamesException {
+
+        if(gamesRepository.findByName(games.getName()).isPresent())
+            throw new Error("This game already exists");
+
         return gamesRepository.save(games);
     }
 
@@ -36,6 +36,11 @@ public class GamesService {
     }
 
     public List<Games> SearchGames(String name) throws GamesException {
-        return gamesRepository.findByNameContainingIgnoreCase(name);
+        List<Games> games = gamesRepository.findByNameContainingIgnoreCase(name);
+
+        if (games == null || games.isEmpty())
+            throw new GamesException("There is no registered games with this name");
+
+        return games;
     }
 }
