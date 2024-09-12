@@ -8,6 +8,8 @@ import com.gui.api_gameslib.exceptions.GamesException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class EsrbRatingsService {
@@ -44,10 +46,10 @@ public class EsrbRatingsService {
         return rating;
     }
 
-    public Iterable<EsrbRating> findAllEsrbRatings() throws GamesException {
-        Iterable<EsrbRating> esrbRatings = esrbRatingsRepository.findAll();
+    public List<EsrbRating> findAllEsrbRatings() throws GamesException {
+        List<EsrbRating> esrbRatings = esrbRatingsRepository.findAll();
 
-        if (!esrbRatings.iterator().hasNext()) throw new GamesException("There is no registered ratings");
+        if (esrbRatings.isEmpty()) throw new GamesException("There is no registered ratings");
 
         return esrbRatings;
     }

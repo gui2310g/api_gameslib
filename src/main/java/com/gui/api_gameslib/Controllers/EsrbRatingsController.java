@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/ratings")
 public class EsrbRatingsController {
@@ -27,9 +29,9 @@ public class EsrbRatingsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(addRatings);
     }
 
-    @GetMapping("/find")
-    public ResponseEntity<Iterable<EsrbRating>> findAllEsrbRatings() {
-        Iterable<EsrbRating> esrbRatings = esrbRatingsService.findAllEsrbRatings();
+    @GetMapping("/findAll")
+    public ResponseEntity<List<EsrbRating>> findAllEsrbRatings() {
+        List<EsrbRating> esrbRatings = esrbRatingsService.findAllEsrbRatings();
         return ResponseEntity.ok(esrbRatings);
     }
 }
