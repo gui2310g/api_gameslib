@@ -16,7 +16,13 @@ public class EsrbRatingsService {
 
     private EsrbRatingsRepository esrbRatingsRepository;
 
-    public EsrbRating AddEsrbRatings(EsrbRating esrbRating) {
+    public EsrbRating AddEsrbRatings(EsrbRating esrbRating) throws GamesException {
+
+        if (esrbRatingsRepository.findByName(esrbRating.getName()).isPresent())
+            throw new GamesException("this rating is already added");
+
+        if(esrbRatingsRepository.count() >= 6) throw new GamesException("All the ratings are added");
+
         return esrbRatingsRepository.save(esrbRating);
     }
 
@@ -27,6 +33,11 @@ public class EsrbRatingsService {
         EsrbRating rating = esrbRatingsRepository.findByName(esrbRatingName)
                 .orElseThrow(() -> new GamesException("EsrbRating Can't found with this name" + esrbRatingName));
 
+        if (game.getEsrbRatings().stream().anyMatch(p -> p.getName().equals(esrbRatingName)))
+            throw new GamesException("This rating is already added in this game");
+
+        if (game.getEsrbRatings().size() > 1) throw new GamesException("The game only needs one rating");
+
         game.getEsrbRatings().add(rating);
         gamesRepository.save(game);
 
@@ -36,7 +47,7 @@ public class EsrbRatingsService {
     public Iterable<EsrbRating> findAllEsrbRatings() throws GamesException {
         Iterable<EsrbRating> esrbRatings = esrbRatingsRepository.findAll();
 
-        if(!esrbRatings.iterator().hasNext()) throw new GamesException("There is no registered ratings");
+        if (!esrbRatings.iterator().hasNext()) throw new GamesException("There is no registered ratings");
 
         return esrbRatings;
     }

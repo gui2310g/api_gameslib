@@ -16,8 +16,7 @@ public class GamesService {
 
     public Games AddGames(Games games) throws GamesException {
 
-        if(gamesRepository.findByName(games.getName()).isPresent())
-            throw new Error("This game already exists");
+        if(gamesRepository.findByName(games.getName()).isPresent()) throw new Error("This game already exists");
 
         return gamesRepository.save(games);
     }
@@ -31,15 +30,13 @@ public class GamesService {
     }
 
     public Games FindGamesById(Integer id) throws GamesException {
-        return gamesRepository.findById(id)
-                .orElseThrow(() -> new GamesException("Can't find a game with this id"));
+        return gamesRepository.findById(id).orElseThrow(() -> new GamesException("Can't find a game with this id"));
     }
 
     public List<Games> SearchGames(String name) throws GamesException {
         List<Games> games = gamesRepository.findByNameContainingIgnoreCase(name);
 
-        if (games == null || games.isEmpty())
-            throw new GamesException("There is no registered games with this name");
+        if(games == null || games.isEmpty()) throw new GamesException("There is no registered games with this name");
 
         return games;
     }
