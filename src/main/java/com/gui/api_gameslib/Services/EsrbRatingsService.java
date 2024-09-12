@@ -28,17 +28,17 @@ public class EsrbRatingsService {
         return esrbRatingsRepository.save(esrbRating);
     }
 
-    public EsrbRating addEsrbRatingsToGame(String esrbRatingName, Integer gameId) throws GamesException {
+    public EsrbRating addEsrbRatingsToGame(Integer EsrbRatingsId, Integer gameId) throws GamesException {
         Games game = gamesRepository.findById(gameId)
                 .orElseThrow(() -> new GamesException("Game not found with ID: " + gameId));
 
-        EsrbRating rating = esrbRatingsRepository.findByName(esrbRatingName)
-                .orElseThrow(() -> new GamesException("EsrbRating Can't found with this name" + esrbRatingName));
+        EsrbRating rating = esrbRatingsRepository.findById(EsrbRatingsId)
+                .orElseThrow(() -> new GamesException("Can't found with this esrbRating"));
 
-        if (game.getEsrbRatings().stream().anyMatch(p -> p.getName().equals(esrbRatingName)))
+        if (game.getEsrbRatings().stream().anyMatch(p -> p.getName().equals(EsrbRatingsId)))
             throw new GamesException("This rating is already added in this game");
 
-        if (game.getEsrbRatings().size() > 1) throw new GamesException("The game only needs one rating");
+        if (!game.getEsrbRatings().isEmpty()) throw new GamesException("The game only needs one rating");
 
         game.getEsrbRatings().add(rating);
         gamesRepository.save(game);

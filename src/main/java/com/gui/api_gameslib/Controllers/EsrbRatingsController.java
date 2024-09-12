@@ -22,10 +22,9 @@ public class EsrbRatingsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRating);
     }
 
-    @PostMapping("/add/{gameId}")
-    public ResponseEntity<EsrbRating> AddEsrbRatingsToGame(@RequestBody EsrbRating esrbRating, @PathVariable Integer gameId) {
-        String esrbRatingName = esrbRating.getName();
-        EsrbRating addRatings = esrbRatingsService.addEsrbRatingsToGame(esrbRatingName, gameId);
+    @PostMapping("/add/{gameId}/{EsrbRatingsId}")
+    public ResponseEntity<EsrbRating> AddEsrbRatingsToGame(@PathVariable Integer EsrbRatingsId, @PathVariable Integer gameId) {
+        EsrbRating addRatings = esrbRatingsService.addEsrbRatingsToGame(EsrbRatingsId, gameId);
         return ResponseEntity.status(HttpStatus.CREATED).body(addRatings);
     }
 
