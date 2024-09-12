@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/games")
-public class GamesController {
+public class    GamesController {
 
     @Autowired
     private GamesService gamesService;
@@ -37,6 +37,12 @@ public class GamesController {
     @GetMapping("/search")
     public ResponseEntity<List<Games>> SearchGames(@RequestParam String name) {
         List<Games> games = gamesService.SearchGames(name);
+        return ResponseEntity.ok(games);
+    }
+
+    @GetMapping("/search/platforms/{platformsId}")
+    public ResponseEntity<List<Games>> findGamesByPlatformName(@PathVariable Integer platformsId) {
+        List<Games> games = gamesService.findGamesByPlatformsId(platformsId);
         return ResponseEntity.ok(games);
     }
 }
