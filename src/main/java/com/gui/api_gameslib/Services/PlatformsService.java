@@ -9,6 +9,8 @@ import com.gui.api_gameslib.exceptions.GamesException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class PlatformsService {
@@ -25,14 +27,14 @@ public class PlatformsService {
         return platformsRepository.save(platforms);
     }
 
-    public Platforms addPlatformToGame(String platformName, Integer gameId) throws GamesException {
+    public Platforms addPlatformToGame(Integer platformsId, Integer gameId) throws GamesException {
         Games game = gamesRepository.findById(gameId)
                 .orElseThrow(() -> new GamesException("Game not found with ID: " + gameId));
 
-        Platforms platform = platformsRepository.findByName(platformName)
-                .orElseThrow(() -> new GamesException("Platform not found with name: " + platformName));
+        Platforms platform = platformsRepository.findById(platformsId)
+                .orElseThrow(() -> new GamesException("Platform not found with id: " + platformsId));
 
-        if (game.getPlatforms().stream().anyMatch(p -> p.getName().equals(platformName)))
+        if (game.getPlatforms().stream().anyMatch(p -> p.getId().equals(platformsId)))
             throw new Error("This platform is already added in this game");
 
         game.getPlatforms().add(platform);
@@ -41,10 +43,10 @@ public class PlatformsService {
         return platform;
     }
 
-    public Iterable<Platforms> findAllPlatforms() throws GamesException {
-        Iterable<Platforms> platforms = platformsRepository.findAll();
+    public List<Platforms> findAllPlatforms() throws GamesException {
+        List<Platforms> platforms = platformsRepository.findAll();
 
-        if(!platforms.iterator().hasNext()) throw new GamesException("There is no registered platforms");
+        if(platforms.isEmpty()) throw new GamesException("There is no registered platforms");
 
         return platforms;
     }

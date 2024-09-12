@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/platforms")
 public class PlatformsController {
@@ -20,16 +22,15 @@ public class PlatformsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(addedPlatforms);
     }
 
-    @PostMapping("/add/{gameId}")
-    public ResponseEntity<Platforms> addPlatformToGame(@RequestBody Platforms platforms, @PathVariable Integer gameId) {
-        String platformName = platforms.getName();
-        Platforms addedPlatformsToGame = platformsService.addPlatformToGame(platformName, gameId);
+    @PostMapping("/add/{gameId}/{platformsId}")
+    public ResponseEntity<Platforms> addPlatformToGame(@PathVariable Integer platformsId, @PathVariable Integer gameId) {
+        Platforms addedPlatformsToGame = platformsService.addPlatformToGame(platformsId, gameId);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedPlatformsToGame);
     }
 
-    @GetMapping("/find")
-    public ResponseEntity<Iterable<Platforms>> findAllPlatforms() {
-        Iterable<Platforms> platforms = platformsService.findAllPlatforms();
+    @GetMapping("/findAll")
+    public ResponseEntity<List<Platforms>> findAllPlatforms() {
+        List<Platforms> platforms = platformsService.findAllPlatforms();
         return ResponseEntity.ok(platforms);
     }
 }
