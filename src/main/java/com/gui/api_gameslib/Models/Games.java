@@ -44,8 +44,13 @@ public class Games {
     )
     private Set<EsrbRating> esrbRatings;
 
-    @OneToMany(mappedBy = "game")
-    private List<Screenshots> Screenshots;
+    @ManyToMany
+    @JoinTable(
+            name = "game_screenshots",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "screenshot_id")
+    )
+    private Set<Screenshots> Screenshots;
 
     @OneToMany(mappedBy = "game")
     private List<Genres> Genres;

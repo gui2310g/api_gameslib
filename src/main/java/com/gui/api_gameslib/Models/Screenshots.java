@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "screenshots")
-
 public class Screenshots {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +14,5 @@ public class Screenshots {
     @Column(name = "url")
     private String url;
 
-    @ManyToOne
-    @JoinColumn(name = "game_id")
-    private Games game;
+    public Screenshots() {}
 }

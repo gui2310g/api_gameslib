@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class PlatformsController {
 
     @Autowired
-    public PlatformsService platformsService;
+    private PlatformsService platformsService;
 
     @PostMapping("/add")
     public ResponseEntity<Platforms> AddPlatforms(@RequestBody Platforms platforms) {
