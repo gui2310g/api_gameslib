@@ -30,7 +30,7 @@ public class ScreenshotsService {
                 .orElseThrow(() -> new GamesException("Game not found with ID: " + gameId));
 
         Screenshots screenshots = screenshotsRepository.findById(screenshotid)
-                .orElseThrow(() -> new GamesException("Could not find a screenshot"));
+                .orElseThrow(() -> new GamesException("Screenshot not found with id: " + screenshotid));
 
         if (game.getScreenshots().stream().anyMatch(p -> p.getId().equals(screenshotid)))
             throw new Error("This screenshot is already added in this game");
