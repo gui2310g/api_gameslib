@@ -20,7 +20,8 @@ public class GamesService {
     private final PlatformsRepository platformsRepository;
     public Games AddGames(Games games) throws GamesException {
 
-        if(gamesRepository.findByName(games.getName()).isPresent()) throw new Error("This game already exists");
+        if(gamesRepository.findByName(games.getName()).isPresent())
+            throw new GamesException("This game already exists");
 
         return gamesRepository.save(games);
     }
