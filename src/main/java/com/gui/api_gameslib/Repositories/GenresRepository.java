@@ -10,4 +10,6 @@ public interface GenresRepository extends CrudRepository<Genres, Integer> {
     Optional<Genres> findById(Integer id);
 
     List<Genres> findAll();
+
+    Optional<Genres> findByName(String name);
 }
