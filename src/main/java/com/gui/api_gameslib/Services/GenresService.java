@@ -8,6 +8,8 @@ import com.gui.api_gameslib.exceptions.GamesException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class GenresService {
@@ -33,6 +35,14 @@ public class GenresService {
 
         game.getGenres().add(genre);
         gamesRepository.save(game);
+
+        return genre;
+    }
+
+    private List<Genres> findAllGenres() throws GamesException {
+        List<Genres> genre = genresRepository.findAll();
+
+        if(genre.isEmpty()) throw new GamesException("There is no registered genres");
 
         return genre;
     }
