@@ -27,4 +27,10 @@ public class GenresController {
         List<Genres> genres = genresService.findAllGenres();
         return ResponseEntity.ok(genres);
     }
+
+    @PostMapping("/add/{gameId}/{genresId}")
+    public ResponseEntity<Genres> addGenresToGame(@PathVariable Integer genresId, @PathVariable Integer gameId) {
+        Genres addedGenresToGame = genresService.addGenresToGame(genresId, gameId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedGenresToGame);
+    }
 }

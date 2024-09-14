@@ -32,8 +32,8 @@ public class GenresService {
         Genres genre = genresRepository.findById(genresId).orElseThrow(
                 () -> new GamesException("Genre not found with id: " + genresId));
 
-        if (game.getEsrbRatings().stream().anyMatch(p -> p.getId().equals(genresId)))
-            throw new GamesException("This rating is already added in this game");
+        if (game.getGenres().stream().anyMatch(p -> p.getId().equals(genresId)))
+            throw new GamesException("This genre is already added in this game");
 
         game.getGenres().add(genre);
         gamesRepository.save(game);
