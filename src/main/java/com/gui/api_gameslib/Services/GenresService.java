@@ -13,9 +13,11 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class GenresService {
+
     private final GenresRepository genresRepository;
 
     private final GamesRepository gamesRepository;
+
     private Genres addGenres(Genres genres) throws GamesException {
         if(genresRepository.findByName(genres.getName()).isPresent())
             throw new GamesException("This genre has already been added");
