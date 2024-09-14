@@ -5,10 +5,9 @@ import com.gui.api_gameslib.Services.GenresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/genres")
@@ -21,5 +20,11 @@ public class GenresController {
     public ResponseEntity<Genres> addGenres(@RequestBody Genres genres) {
         Genres addedGenre = genresService.addGenres(genres);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedGenre);
+    }
+
+    @GetMapping("/findAll")
+    public ResponseEntity<List<Genres>> findAllGenres() {
+        List<Genres> genres = genresService.findAllGenres();
+        return ResponseEntity.ok(genres);
     }
 }
