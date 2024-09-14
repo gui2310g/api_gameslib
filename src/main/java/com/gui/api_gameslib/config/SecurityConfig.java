@@ -38,7 +38,8 @@ public class SecurityConfig {
                                         "/games/**",
                                         "/platforms/**",
                                         "/ratings/**",
-                                        "/screenshots/**"
+                                        "/screenshots/**",
+                                        "/genres/**"
                                 ).permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
