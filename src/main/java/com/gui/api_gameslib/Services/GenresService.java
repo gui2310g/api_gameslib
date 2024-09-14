@@ -18,14 +18,14 @@ public class GenresService {
 
     private final GamesRepository gamesRepository;
 
-    private Genres addGenres(Genres genres) throws GamesException {
+    public Genres addGenres(Genres genres) throws GamesException {
         if(genresRepository.findByName(genres.getName()).isPresent())
             throw new GamesException("This genre has already been added");
 
         return genresRepository.save(genres);
     }
 
-    private Genres addGenresToGame(Integer genresId, Integer gameId) throws GamesException {
+    public Genres addGenresToGame(Integer genresId, Integer gameId) throws GamesException {
         Games game = gamesRepository.findById(gameId).orElseThrow(
                 () -> new GamesException("Game not found with ID: " + gameId));
 
@@ -41,7 +41,7 @@ public class GenresService {
         return genre;
     }
 
-    private List<Genres> findAllGenres() throws GamesException {
+    public List<Genres> findAllGenres() throws GamesException {
         List<Genres> genre = genresRepository.findAll();
 
         if(genre.isEmpty()) throw new GamesException("There is no registered genres");
