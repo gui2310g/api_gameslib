@@ -84,7 +84,7 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UserException("Can't find the game with this id"));
 
         Users existingUser = usersRepository.findById(id)
-                .orElseThrow(() -> new UserException("Can't found the user with this"));
+                .orElseThrow(() -> new UserException("Can't find the user with this id"));
 
         if (existingUser.getWishlistGames().stream().anyMatch(p -> p.getId().equals(gameId)))
             throw new UserException("This game is already added in this user");
@@ -93,7 +93,6 @@ public class UserService implements UserDetailsService {
         usersRepository.save(existingUser);
 
         return existingUser;
-
     }
 
     @Override
