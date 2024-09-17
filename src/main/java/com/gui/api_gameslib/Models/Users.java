@@ -1,8 +1,12 @@
 package com.gui.api_gameslib.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import lombok.Data;
+
+import java.util.Set;
 
 @Data
 @Entity
@@ -23,6 +27,19 @@ public class Users {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_wishlistGames",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id")
+    )
+    @JsonIgnoreProperties({
+            "description", "released", "background_image",
+            "image_logo", "rating", "platforms",
+            "esrbRatings", "publishers", "genres", "screenshots"
+    })
+    private Set<Games> WishlistGames;
 
     public Users() {}
 }
