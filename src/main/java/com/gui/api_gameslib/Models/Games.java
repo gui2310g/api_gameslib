@@ -60,6 +60,11 @@ public class Games {
     )
     private Set<Genres> Genres;
 
-    @OneToMany(mappedBy = "game")
-    private List<Publishers> publishers;
+    @ManyToMany
+    @JoinTable(
+            name = "game_developers",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "developer_id")
+    )
+    private Set<Publishers> publishers;
 }
