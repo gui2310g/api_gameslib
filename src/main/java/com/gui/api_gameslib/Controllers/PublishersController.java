@@ -28,4 +28,10 @@ public class PublishersController {
 
         return ResponseEntity.ok(publishers);
     }
+
+    @PostMapping("/add/{gameId}/{publishersId}")
+    public ResponseEntity<Publishers> addPublishersToGame(@PathVariable Integer publishersId, @PathVariable Integer gameId) {
+        Publishers addedPublishersToGame = publishersService.addPublishersToGame(publishersId, gameId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedPublishersToGame);
+    }
 }
