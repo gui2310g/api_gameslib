@@ -1,6 +1,8 @@
 package com.gui.api_gameslib.Services;
 
+import com.gui.api_gameslib.Models.Games;
 import com.gui.api_gameslib.Models.Users;
+import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.UsersRepository;
 import com.gui.api_gameslib.UserAuthenticated;
 import com.gui.api_gameslib.exceptions.UserException;
@@ -21,6 +23,8 @@ public class UserService implements UserDetailsService {
     private final UsersRepository usersRepository;
 
     private PasswordEncoder passwordEncoder;
+
+    private final GamesRepository gamesRepository;
 
     public Users CreateUser(Users users) throws UserException {
         if (usersRepository.findByEmail(users.getEmail()).isPresent())
@@ -73,6 +77,23 @@ public class UserService implements UserDetailsService {
         usersRepository.delete(existingUser);
 
         return existingUser;
+    }
+
+    public Users AddGamestoUser(Integer id, Integer gameId) throws UserException {
+        Games game = gamesRepository.findById(gameId)
+                .orElseThrow(() -> new UserException("Can't find the game with this id"));
+
+        Users existingUser = usersRepository.findById(id)
+                .orElseThrow(() -> new UserException("Can't found the user with this"));
+
+        if (existingUser.getWishlistGames().stream().anyMatch(p -> p.getId().equals(gameId)))
+            throw new UserException("This game is already added in this user");
+
+        existingUser.getWishlistGames().add(game);
+        usersRepository.save(existingUser);
+
+        return existingUser;
+
     }
 
     @Override
