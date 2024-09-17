@@ -18,10 +18,5 @@ public class Publishers {
     @Column(name = "slug")
     private String slug;
 
-    @Column(name = "games_count")
-    private Integer games_count;
-
-    @ManyToOne
-    @JoinColumn(name = "game_id")
-    private Games game;
+    public Publishers() {}
 }
