@@ -2,8 +2,10 @@ package com.gui.api_gameslib.Services;
 
 import com.gui.api_gameslib.Models.Games;
 import com.gui.api_gameslib.Models.Platforms;
+import com.gui.api_gameslib.Models.Publishers;
 import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.PlatformsRepository;
+import com.gui.api_gameslib.Repositories.PublishersRepository;
 import com.gui.api_gameslib.exceptions.GamesException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ public class GamesService {
     private final GamesRepository gamesRepository;
 
     private final PlatformsRepository platformsRepository;
+
+    private final PublishersRepository publishersRepository;
+
     public Games AddGames(Games games) throws GamesException {
         if(gamesRepository.findByName(games.getName()).isPresent())
             throw new GamesException("This game already exists");
@@ -45,11 +50,22 @@ public class GamesService {
 
     public List<Games> findGamesByPlatformsId(Integer platformsId) throws GamesException {
         Platforms platform = platformsRepository.findById(platformsId)
-                .orElseThrow(() -> new GamesException("Platform not found with Id: " + platformsId));
+                .orElseThrow(() -> new GamesException("No games found with this platform id"));
 
         List<Games> games = gamesRepository.findByPlatformsId(platformsId);
 
         if (games.isEmpty()) throw new GamesException("No games found for this platform");
+
+        return games;
+    }
+
+    public List<Games> findGamesByPublishersId(Integer publishersId) throws GamesException {
+        Publishers publishers = publishersRepository.findById(publishersId)
+                .orElseThrow(() -> new GamesException("No games found with this publisher id"));
+
+        List<Games> games = gamesRepository.findByPublishersId(publishersId);
+
+        if(games.isEmpty()) throw new GamesException("No games found for this publisher");
 
         return games;
     }

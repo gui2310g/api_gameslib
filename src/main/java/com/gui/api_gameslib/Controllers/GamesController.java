@@ -40,8 +40,14 @@ public class GamesController {
     }
 
     @GetMapping("/search/platforms/{platformsId}")
-    public ResponseEntity<List<Games>> findGamesByPlatformName(@PathVariable Integer platformsId) {
+    public ResponseEntity<List<Games>> findGamesByPlatformId(@PathVariable Integer platformsId) {
         List<Games> games = gamesService.findGamesByPlatformsId(platformsId);
+        return ResponseEntity.ok(games);
+    }
+
+    @GetMapping("/search/publishers/{publishersId}")
+    public ResponseEntity<List<Games>> findGamesByPublishersId(@PathVariable Integer publishersId) {
+        List<Games> games = gamesService.findGamesByPublishersId(publishersId);
         return ResponseEntity.ok(games);
     }
 }

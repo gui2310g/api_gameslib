@@ -12,5 +12,7 @@ public interface GamesRepository extends JpaRepository<Games, Integer> {
 
     List<Games> findByPlatformsId(Integer platformsId);
 
+    List<Games> findByPublishersId(Integer publishersId);
+
     List<Games> findByNameContainingIgnoreCase(String name);
 }
