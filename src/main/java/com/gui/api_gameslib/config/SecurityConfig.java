@@ -40,7 +40,8 @@ public class SecurityConfig {
                                         "/platforms/**",
                                         "/ratings/**",
                                         "/screenshots/**",
-                                        "/genres/**"
+                                        "/genres/**",
+                                        "/publishers/**"
                                 ).permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
