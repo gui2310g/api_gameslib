@@ -7,7 +7,6 @@ import lombok.Data;
 @Entity
 @Table(name = "publishers")
 public class Publishers {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

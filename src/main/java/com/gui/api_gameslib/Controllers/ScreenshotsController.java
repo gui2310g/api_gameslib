@@ -12,7 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/screenshots")
 public class ScreenshotsController {
-
     @Autowired
     private ScreenshotsService screenshotsService;
 
@@ -35,5 +34,4 @@ public class ScreenshotsController {
         Screenshots addedScreenshot = screenshotsService.addScreenshotsToGame(screenshotId, gameId);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedScreenshot);
     }
-
 }

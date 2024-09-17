@@ -7,10 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UsersController {
-
     @Autowired
     private UserService userService;
 
@@ -22,8 +23,8 @@ public class UsersController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<Iterable<Users>> FindAllUsers() {
-        Iterable<Users> users = userService.FindAllUsers();
+    public ResponseEntity<List<Users>> FindAllUsers() {
+        List<Users> users = userService.FindAllUsers();
         return ResponseEntity.ok(users);
     }
 

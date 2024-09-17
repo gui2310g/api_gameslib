@@ -11,8 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/games")
-public class    GamesController {
-
+public class GamesController {
     @Autowired
     private GamesService gamesService;
 
@@ -23,8 +22,8 @@ public class    GamesController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<Iterable<Games>> FindAllGames() {
-        Iterable<Games> games = gamesService.FindAllGames();
+    public ResponseEntity<List<Games>> FindAllGames() {
+        List<Games> games = gamesService.FindAllGames();
         return ResponseEntity.ok(games);
     }
 

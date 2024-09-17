@@ -7,6 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class PublishersService {
-
     private final PublishersRepository publishersRepository;
 }

@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class GenresService {
-
     private final GenresRepository genresRepository;
 
     private final GamesRepository gamesRepository;

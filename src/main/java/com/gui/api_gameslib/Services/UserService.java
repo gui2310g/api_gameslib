@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
@@ -32,10 +34,10 @@ public class UserService implements UserDetailsService {
         return usersRepository.save(users);
     }
 
-    public Iterable<Users> FindAllUsers() throws UserException {
-        Iterable<Users> users = usersRepository.findAll();
+    public List<Users> FindAllUsers() throws UserException {
+        List<Users> users = usersRepository.findAll();
 
-        if(!users.iterator().hasNext()) throw new UserException("There is no registered Users");
+        if(users.isEmpty()) throw new UserException("There is no registered Users");
 
         return users;
     }

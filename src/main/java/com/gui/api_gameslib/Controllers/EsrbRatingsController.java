@@ -12,7 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/ratings")
 public class EsrbRatingsController {
-
     @Autowired
     private EsrbRatingsService esrbRatingsService;
 

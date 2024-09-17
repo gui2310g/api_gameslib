@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class PlatformsService {
-
     private final PlatformsRepository platformsRepository;
 
     private final GamesRepository gamesRepository;

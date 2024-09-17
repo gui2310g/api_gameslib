@@ -10,7 +10,6 @@ import java.util.Date;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(GamesException.class)
     public ResponseEntity<ErrorMessage> handleGamesException(GamesException ex, WebRequest request) {
         ErrorMessage message = new ErrorMessage(

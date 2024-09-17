@@ -6,7 +6,6 @@ import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.PlatformsRepository;
 import com.gui.api_gameslib.exceptions.GamesException;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,22 +13,20 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class GamesService {
-
     private final GamesRepository gamesRepository;
 
     private final PlatformsRepository platformsRepository;
     public Games AddGames(Games games) throws GamesException {
-
         if(gamesRepository.findByName(games.getName()).isPresent())
             throw new GamesException("This game already exists");
 
         return gamesRepository.save(games);
     }
 
-    public Iterable<Games> FindAllGames() throws GamesException {
-        Iterable<Games> games = gamesRepository.findAll();
+    public List<Games> FindAllGames() throws GamesException {
+        List<Games> games = gamesRepository.findAll();
 
-        if (!games.iterator().hasNext()) throw new GamesException("There is no registered games");
+        if (games.isEmpty()) throw new GamesException("There is no registered games");
 
         return games;
     }

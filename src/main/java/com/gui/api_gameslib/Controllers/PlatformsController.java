@@ -12,7 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/platforms")
 public class PlatformsController {
-
     @Autowired
     private PlatformsService platformsService;
 

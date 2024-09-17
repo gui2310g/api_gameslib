@@ -26,6 +26,7 @@ import java.security.interfaces.RSAPublicKey;
 public class SecurityConfig {
     @Value("${app.jwt.pub}")
     private RSAPublicKey key;
+
     @Value("${app.jwt.priv}")
     private RSAPrivateKey priv;
 

@@ -13,13 +13,11 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class EsrbRatingsService {
-
     private GamesRepository gamesRepository;
 
     private EsrbRatingsRepository esrbRatingsRepository;
 
     public EsrbRating AddEsrbRatings(EsrbRating esrbRating) throws GamesException {
-
         if (esrbRatingsRepository.findByName(esrbRating.getName()).isPresent())
             throw new GamesException("this rating is already added");
 

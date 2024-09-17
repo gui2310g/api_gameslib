@@ -1,16 +1,11 @@
 package com.gui.api_gameslib.Repositories;
 
 import com.gui.api_gameslib.Models.Genres;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 @Repository
-public interface GenresRepository extends CrudRepository<Genres, Integer> {
-    Optional<Genres> findById(Integer id);
-
-    List<Genres> findAll();
-
+public interface GenresRepository extends JpaRepository<Genres, Integer> {
     Optional<Genres> findByName(String name);
 }

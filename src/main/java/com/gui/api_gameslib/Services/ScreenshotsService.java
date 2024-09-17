@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class ScreenshotsService {
-
     private final GamesRepository gamesRepository;
 
     private final ScreenshotsRepository screenshotsRepository;
