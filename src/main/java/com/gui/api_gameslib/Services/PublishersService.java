@@ -6,6 +6,8 @@ import com.gui.api_gameslib.exceptions.GamesException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class PublishersService {
@@ -16,5 +18,13 @@ public class PublishersService {
             throw new GamesException("This publisher is already added");
 
         return publishersRepository.save(publishers);
+    }
+
+    public List<Publishers> findAllPublishers() throws GamesException {
+        List<Publishers> publishers = publishersRepository.findAll();
+
+        if(publishers.isEmpty()) throw new GamesException("There is no registered publishers");
+
+        return publishers;
     }
 }
