@@ -11,4 +11,6 @@ public interface PublishersRepository extends CrudRepository<Publishers, Integer
     Optional<Publishers> findById(Integer id);
 
     List<Publishers> findAll();
+
+    Optional<Publishers> findByName(String name);
 }
