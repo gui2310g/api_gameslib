@@ -6,6 +6,8 @@ import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.GenresRepository;
 import com.gui.api_gameslib.exceptions.GamesException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,8 +42,10 @@ public class GenresService {
         return genre;
     }
 
-    public List<Genres> findAllGenres() throws GamesException {
-        List<Genres> genre = genresRepository.findAll();
+    public Page<Genres> findAllGenres(int page, int size) throws GamesException {
+        Page<Genres> genre = genresRepository.findAll(PageRequest.of(page, size));
+
+        if (page >= genre.getTotalPages()) throw new GamesException("Page number out of bounds");
 
         if(genre.isEmpty()) throw new GamesException("There is no registered genres");
 

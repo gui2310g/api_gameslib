@@ -6,9 +6,9 @@ import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.PublishersRepository;
 import com.gui.api_gameslib.exceptions.GamesException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -23,8 +23,10 @@ public class PublishersService {
         return publishersRepository.save(publishers);
     }
 
-    public List<Publishers> findAllPublishers() throws GamesException {
-        List<Publishers> publishers = publishersRepository.findAll();
+    public Page<Publishers> findAllPublishers(int page, int size) throws GamesException {
+        Page<Publishers> publishers = publishersRepository.findAll(PageRequest.of(page, size));
+
+        if (page >= publishers.getTotalPages()) throw new GamesException("Page number out of bounds");
 
         if(publishers.isEmpty()) throw new GamesException("There is no registered publishers");
 

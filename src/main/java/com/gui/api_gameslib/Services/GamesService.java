@@ -8,6 +8,8 @@ import com.gui.api_gameslib.Repositories.PlatformsRepository;
 import com.gui.api_gameslib.Repositories.PublishersRepository;
 import com.gui.api_gameslib.exceptions.GamesException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +30,10 @@ public class GamesService {
         return gamesRepository.save(games);
     }
 
-    public List<Games> FindAllGames() throws GamesException {
-        List<Games> games = gamesRepository.findAll();
+    public Page<Games> FindAllGames(int page, int size) throws GamesException {
+        Page<Games> games = gamesRepository.findAll(PageRequest.of(page, size));
+
+        if (page >= games.getTotalPages()) throw new GamesException("Page number out of bounds");
 
         if (games.isEmpty()) throw new GamesException("There is no registered games");
 

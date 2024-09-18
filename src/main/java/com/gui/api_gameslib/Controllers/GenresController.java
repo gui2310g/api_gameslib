@@ -3,6 +3,7 @@ package com.gui.api_gameslib.Controllers;
 import com.gui.api_gameslib.Models.Genres;
 import com.gui.api_gameslib.Services.GenresService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,8 @@ public class GenresController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Genres>> findAllGenres() {
-        List<Genres> genres = genresService.findAllGenres();
+    public ResponseEntity<Page<Genres>> findAllGenres(@RequestParam int page, @RequestParam int size) {
+        Page<Genres> genres = genresService.findAllGenres(page, size);
         return ResponseEntity.ok(genres);
     }
 

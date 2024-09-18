@@ -18,7 +18,6 @@ public class UsersController {
     @PostMapping("/create")
     public ResponseEntity<Users> CreateUser(@RequestBody Users users) {
         Users createdUser = userService.CreateUser(users);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
@@ -49,6 +48,7 @@ public class UsersController {
     @PostMapping("/addGames/{userId}/{gameId}")
     public ResponseEntity<Users> AddGamesToUser(@PathVariable Integer userId, @PathVariable Integer gameId) {
         Users user = userService.AddGamestoUser(userId, gameId);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 }
