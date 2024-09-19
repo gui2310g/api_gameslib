@@ -95,6 +95,22 @@ public class UserService implements UserDetailsService {
         return existingUser;
     }
 
+    public Users RemoveGamefromUser(Integer id, Integer gameId) throws UserException {
+        Games game = gamesRepository.findById(gameId)
+               .orElseThrow(() -> new UserException("Can't find the game with this id"));
+
+        Users existingUser = usersRepository.findById(id)
+               .orElseThrow(() -> new UserException("Can't find the user with this id"));
+
+        if (!existingUser.getWishlistGames().contains(game))
+            throw new UserException("This game is not added in this user");
+
+        existingUser.getWishlistGames().remove(game);
+        usersRepository.save(existingUser);
+
+        return existingUser;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return usersRepository

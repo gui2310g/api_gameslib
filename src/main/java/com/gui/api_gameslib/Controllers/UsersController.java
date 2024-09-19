@@ -48,7 +48,6 @@ public class UsersController {
     @PostMapping("/addGames/{userId}/{gameId}")
     public ResponseEntity<Users> AddGamesToUser(@PathVariable Integer userId, @PathVariable Integer gameId) {
         Users user = userService.AddGamestoUser(userId, gameId);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 }
