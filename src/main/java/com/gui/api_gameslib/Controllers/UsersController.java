@@ -50,4 +50,10 @@ public class UsersController {
         Users user = userService.AddGamestoUser(userId, gameId);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
+
+    @DeleteMapping("/removeGames/{userId}/{gameId}")
+    public ResponseEntity<Users> RemoveGamefromUser(@PathVariable Integer userId, @PathVariable Integer gameId) {
+        Users user = userService.RemoveGamefromUser(userId, gameId);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
 }
