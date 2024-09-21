@@ -1,7 +1,7 @@
 package com.gui.api_gameslib.Services;
 
-import com.gui.api_gameslib.Models.Games;
-import com.gui.api_gameslib.Models.Screenshots;
+import com.gui.api_gameslib.entities.Games;
+import com.gui.api_gameslib.entities.Screenshots;
 import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.ScreenshotsRepository;
 import com.gui.api_gameslib.exceptions.GamesException;

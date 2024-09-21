@@ -1,6 +1,6 @@
-package com.gui.api_gameslib.Controllers;
+package com.gui.api_gameslib.controllers;
 
-import com.gui.api_gameslib.Models.Users;
+import com.gui.api_gameslib.entities.Users;
 import com.gui.api_gameslib.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

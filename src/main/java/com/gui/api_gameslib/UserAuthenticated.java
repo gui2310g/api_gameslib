@@ -1,6 +1,6 @@
 package com.gui.api_gameslib;
 
-import com.gui.api_gameslib.Models.Users;
+import com.gui.api_gameslib.entities.Users;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

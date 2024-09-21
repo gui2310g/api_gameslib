@@ -1,7 +1,7 @@
 package com.gui.api_gameslib.Services;
 
-import com.gui.api_gameslib.Models.Games;
-import com.gui.api_gameslib.Models.Users;
+import com.gui.api_gameslib.entities.Games;
+import com.gui.api_gameslib.entities.Users;
 import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.UsersRepository;
 import com.gui.api_gameslib.UserAuthenticated;
@@ -99,7 +99,7 @@ public class UserService implements UserDetailsService {
         Games game = gamesRepository.findById(gameId)
                .orElseThrow(() -> new UserException("Can't find the game with this id"));
 
-        Users existingUser = usersRepository.findById(id)
+        Users existingUser = usersRepository.findById(  id)
                .orElseThrow(() -> new UserException("Can't find the user with this id"));
 
         if (!existingUser.getWishlistGames().contains(game))

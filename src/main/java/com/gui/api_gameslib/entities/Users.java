@@ -1,7 +1,6 @@
-package com.gui.api_gameslib.Models;
+package com.gui.api_gameslib.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import lombok.Data;

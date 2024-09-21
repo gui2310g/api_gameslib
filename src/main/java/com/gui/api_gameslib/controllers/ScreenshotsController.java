@@ -1,6 +1,6 @@
-package com.gui.api_gameslib.Controllers;
+package com.gui.api_gameslib.controllers;
 
-import com.gui.api_gameslib.Models.Screenshots;
+import com.gui.api_gameslib.entities.Screenshots;
 import com.gui.api_gameslib.Services.ScreenshotsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

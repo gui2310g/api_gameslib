@@ -1,6 +1,6 @@
-package com.gui.api_gameslib.Controllers;
+package com.gui.api_gameslib.controllers;
 
-import com.gui.api_gameslib.Models.Platforms;
+import com.gui.api_gameslib.entities.Platforms;
 import com.gui.api_gameslib.Services.PlatformsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

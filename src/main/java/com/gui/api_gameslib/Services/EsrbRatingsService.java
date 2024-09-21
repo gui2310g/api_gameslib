@@ -1,7 +1,7 @@
 package com.gui.api_gameslib.Services;
 
-import com.gui.api_gameslib.Models.EsrbRating;
-import com.gui.api_gameslib.Models.Games;
+import com.gui.api_gameslib.entities.EsrbRating;
+import com.gui.api_gameslib.entities.Games;
 import com.gui.api_gameslib.Repositories.EsrbRatingsRepository;
 import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.exceptions.GamesException;
@@ -13,9 +13,9 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class EsrbRatingsService {
-    private GamesRepository gamesRepository;
+    private final GamesRepository gamesRepository;
 
-    private EsrbRatingsRepository esrbRatingsRepository;
+    private final EsrbRatingsRepository esrbRatingsRepository;
 
     public EsrbRating AddEsrbRatings(EsrbRating esrbRating) throws GamesException {
         if (esrbRatingsRepository.findByName(esrbRating.getName()).isPresent())

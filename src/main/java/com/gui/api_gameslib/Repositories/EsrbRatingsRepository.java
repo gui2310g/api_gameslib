@@ -1,6 +1,6 @@
 package com.gui.api_gameslib.Repositories;
 
-import com.gui.api_gameslib.Models.EsrbRating;
+import com.gui.api_gameslib.entities.EsrbRating;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

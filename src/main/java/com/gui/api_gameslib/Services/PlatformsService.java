@@ -1,7 +1,7 @@
 package com.gui.api_gameslib.Services;
 
-import com.gui.api_gameslib.Models.Games;
-import com.gui.api_gameslib.Models.Platforms;
+import com.gui.api_gameslib.entities.Games;
+import com.gui.api_gameslib.entities.Platforms;
 
 import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.PlatformsRepository;
@@ -10,8 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor

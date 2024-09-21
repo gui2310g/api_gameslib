@@ -1,4 +1,4 @@
-package com.gui.api_gameslib.Models;
+package com.gui.api_gameslib.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

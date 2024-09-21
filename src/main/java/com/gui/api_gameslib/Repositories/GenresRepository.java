@@ -1,6 +1,6 @@
 package com.gui.api_gameslib.Repositories;
 
-import com.gui.api_gameslib.Models.Genres;
+import com.gui.api_gameslib.entities.Genres;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

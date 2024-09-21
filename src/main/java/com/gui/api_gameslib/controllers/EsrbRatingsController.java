@@ -1,6 +1,6 @@
-package com.gui.api_gameslib.Controllers;
+package com.gui.api_gameslib.controllers;
 
-import com.gui.api_gameslib.Models.EsrbRating;
+import com.gui.api_gameslib.entities.EsrbRating;
 import com.gui.api_gameslib.Services.EsrbRatingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
