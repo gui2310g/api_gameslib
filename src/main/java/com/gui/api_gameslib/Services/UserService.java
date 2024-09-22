@@ -4,14 +4,10 @@ import com.gui.api_gameslib.entities.Games;
 import com.gui.api_gameslib.entities.Users;
 import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.UsersRepository;
-import com.gui.api_gameslib.UserAuthenticated;
 import com.gui.api_gameslib.exceptions.UserException;
 
 import lombok.AllArgsConstructor;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +15,10 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
     private final UsersRepository usersRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     private final GamesRepository gamesRepository;
 
@@ -109,13 +105,5 @@ public class UserService implements UserDetailsService {
         usersRepository.save(existingUser);
 
         return existingUser;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usersRepository
-                .findByUsername(username)
-                .map(UserAuthenticated::new)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

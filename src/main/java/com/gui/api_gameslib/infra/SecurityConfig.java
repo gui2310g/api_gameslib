@@ -1,4 +1,4 @@
-package com.gui.api_gameslib.config;
+package com.gui.api_gameslib.infra;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;

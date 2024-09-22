@@ -1,4 +1,4 @@
-package com.gui.api_gameslib.Services;
+package com.gui.api_gameslib.infra;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;

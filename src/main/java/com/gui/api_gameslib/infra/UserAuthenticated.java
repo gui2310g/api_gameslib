@@ -1,4 +1,4 @@
-package com.gui.api_gameslib;
+package com.gui.api_gameslib.infra;
 
 import com.gui.api_gameslib.entities.Users;
 import lombok.AllArgsConstructor;

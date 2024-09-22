@@ -3,6 +3,7 @@ package com.gui.api_gameslib.Services;
 import com.gui.api_gameslib.Repositories.UsersRepository;
 import com.gui.api_gameslib.entities.Users;
 import com.gui.api_gameslib.exceptions.AuthException;
+import com.gui.api_gameslib.infra.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
