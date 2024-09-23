@@ -48,9 +48,9 @@ public class UserService {
         );
     }
 
-    public Users updateUser(Users users, Integer id) throws UserException {
-        Users existingUser = usersRepository.findById(id)
-                .orElseThrow(() -> new UserException("Can't found the user with this id to update"));
+    public Users updateUser(Users users, String username) throws UserException {
+        Users existingUser = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UserException("Can't find the user with this username to update"));
 
         if(usersRepository.findByEmail(users.getEmail()).isPresent()
                 || usersRepository.findByUsername(users.getUsername()).isPresent()
@@ -66,9 +66,9 @@ public class UserService {
         return usersRepository.save(existingUser);
     }
 
-    public Users DeleteUser(Integer id) throws UserException {
-        Users existingUser = usersRepository.findById(id)
-                .orElseThrow(() -> new UserException("Can't find the user with this ID to delete"));
+    public Users DeleteUser(String username) throws UserException {
+        Users existingUser = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UserException("Can't find the user with this username to delete"));
 
         usersRepository.delete(existingUser);
 
@@ -80,7 +80,7 @@ public class UserService {
                 .orElseThrow(() -> new UserException("Can't find the game with this id"));
 
         Users existingUser = usersRepository.findByUsername(username)
-                .orElseThrow(() -> new UserException("Can't find the user with this email"));
+                .orElseThrow(() -> new UserException("Can't find the user with this username to add the game"));
 
         if (existingUser.getWishlistGames().stream().anyMatch(p -> p.getId().equals(gameId)))
             throw new UserException("This game is already added in this user");
@@ -96,7 +96,7 @@ public class UserService {
                .orElseThrow(() -> new UserException("Can't find the game with this id"));
 
         Users existingUser = usersRepository.findByUsername(username)
-                .orElseThrow(() -> new UserException("Can't find the user with this email"));
+                .orElseThrow(() -> new UserException("Can't find the user with this username to remove the game"));
 
         if (!existingUser.getWishlistGames().contains(game))
             throw new UserException("This game is not added in this user");

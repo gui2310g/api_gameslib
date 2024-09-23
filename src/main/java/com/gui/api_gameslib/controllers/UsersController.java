@@ -16,6 +16,10 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
+    private String getUsername(Authentication authentication) {
+        return authentication.getName();
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Users> CreateUser(@RequestBody Users users) {
         Users createdUser = userService.CreateUser(users);
@@ -34,39 +38,27 @@ public class UsersController {
         return ResponseEntity.ok(selectedUser);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Users> updateUser(@RequestBody Users users, @PathVariable  Integer id) {
-        Users updatedUser = userService.updateUser(users, id);
+    @PutMapping("/update")
+    public ResponseEntity<Users> updateUser(@RequestBody Users users, Authentication authentication) {
+        Users updatedUser = userService.updateUser(users, getUsername(authentication));
         return ResponseEntity.ok(updatedUser);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Users> deleteUser(@PathVariable Integer id) {
-        Users deletedUser = userService.DeleteUser(id);
-        return ResponseEntity.ok(deletedUser);
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteUser(Authentication authentication) {
+        Users deletedUser = userService.DeleteUser(getUsername(authentication));
+        return ResponseEntity.ok("user deleted");
     }
 
     @PostMapping("/wishlist/add/{gameId}")
-    public ResponseEntity<Users> addGameToUser(
-            @PathVariable Integer gameId,
-            Authentication authentication
-    ) {
-        String username = authentication.getName();
-
-        Users user = userService.AddGamestoUser(username, gameId);
-
+    public ResponseEntity<Users> addGameToUser(@PathVariable Integer gameId, Authentication authentication) {
+        Users user = userService.AddGamestoUser(getUsername(authentication), gameId);
         return ResponseEntity.ok(user);
     }
 
-
     @DeleteMapping("/wishlist/delete/{gameId}")
-    public ResponseEntity<Users> RemoveGamefromUser(
-            @PathVariable Integer gameId,
-            Authentication authentication
-    ) {
-        String username = authentication.getName();
-
-        Users user = userService.RemoveGamefromUser(username, gameId);
+    public ResponseEntity<Users> RemoveGamefromUser(@PathVariable Integer gameId, Authentication authentication) {
+        Users user = userService.RemoveGamefromUser(getUsername(authentication), gameId);
         return ResponseEntity.ok(user);
     }
 }
