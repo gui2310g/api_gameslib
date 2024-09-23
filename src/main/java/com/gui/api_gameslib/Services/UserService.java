@@ -75,12 +75,12 @@ public class UserService {
         return existingUser;
     }
 
-    public Users AddGamestoUser(Integer id, Integer gameId) throws UserException {
+    public Users AddGamestoUser(String username, Integer gameId) throws UserException {
         Games game = gamesRepository.findById(gameId)
                 .orElseThrow(() -> new UserException("Can't find the game with this id"));
 
-        Users existingUser = usersRepository.findById(id)
-                .orElseThrow(() -> new UserException("Can't find the user with this id"));
+        Users existingUser = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UserException("Can't find the user with this email"));
 
         if (existingUser.getWishlistGames().stream().anyMatch(p -> p.getId().equals(gameId)))
             throw new UserException("This game is already added in this user");
@@ -91,12 +91,12 @@ public class UserService {
         return existingUser;
     }
 
-    public Users RemoveGamefromUser(Integer id, Integer gameId) throws UserException {
+    public Users RemoveGamefromUser(String username, Integer gameId) throws UserException {
         Games game = gamesRepository.findById(gameId)
                .orElseThrow(() -> new UserException("Can't find the game with this id"));
 
-        Users existingUser = usersRepository.findById(  id)
-               .orElseThrow(() -> new UserException("Can't find the user with this id"));
+        Users existingUser = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UserException("Can't find the user with this email"));
 
         if (!existingUser.getWishlistGames().contains(game))
             throw new UserException("This game is not added in this user");

@@ -5,6 +5,7 @@ import com.gui.api_gameslib.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,15 +46,27 @@ public class UsersController {
         return ResponseEntity.ok(deletedUser);
     }
 
-    @PostMapping("/addGames/{userId}/{gameId}")
-    public ResponseEntity<Users> AddGamesToUser(@PathVariable Integer userId, @PathVariable Integer gameId) {
-        Users user = userService.AddGamestoUser(userId, gameId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    @PostMapping("/wishlist/add/{gameId}")
+    public ResponseEntity<Users> addGameToUser(
+            @PathVariable Integer gameId,
+            Authentication authentication
+    ) {
+        String username = authentication.getName();
+
+        Users user = userService.AddGamestoUser(username, gameId);
+
+        return ResponseEntity.ok(user);
     }
 
-    @DeleteMapping("/removeGames/{userId}/{gameId}")
-    public ResponseEntity<Users> RemoveGamefromUser(@PathVariable Integer userId, @PathVariable Integer gameId) {
-        Users user = userService.RemoveGamefromUser(userId, gameId);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+
+    @DeleteMapping("/wishlist/delete/{gameId}")
+    public ResponseEntity<Users> RemoveGamefromUser(
+            @PathVariable Integer gameId,
+            Authentication authentication
+    ) {
+        String username = authentication.getName();
+
+        Users user = userService.RemoveGamefromUser(username, gameId);
+        return ResponseEntity.ok(user);
     }
 }
