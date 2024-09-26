@@ -37,14 +37,16 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers(
-                                "/auth/**",
+                                        "/auth/**",
                                         "/users/**",
                                         "/games/**",
                                         "/platforms/**",
                                         "/ratings/**",
                                         "/screenshots/**",
                                         "/genres/**",
-                                        "/publishers/**"
+                                        "/publishers/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**"
                                 ).permitAll()
                                 .anyRequest()
                                 .authenticated())
