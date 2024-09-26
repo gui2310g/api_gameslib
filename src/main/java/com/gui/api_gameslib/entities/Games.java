@@ -13,25 +13,25 @@ public class Games {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "slug")
+    @Column(name = "slug", nullable = false)
     private String slug;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "description", length = 1000)
     private String description;
 
-    @Column(name = "released")
+    @Column(name = "released", nullable = false)
     private String released;
 
-    @Column(name = "background_image")
+    @Column(name = "background_image", nullable = false)
     private String background_image;
 
-    @Column(name = "image_logo")
+    @Column(name = "image_logo", nullable = false)
     private String image_logo;
 
-    @Column(name = "rating")
+    @Column(name = "rating", nullable = false)
     private Integer rating;
 
     @ManyToMany

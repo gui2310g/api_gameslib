@@ -1,5 +1,6 @@
 package com.gui.api_gameslib.controllers;
 
+import com.gui.api_gameslib.dto.GameRequest;
 import com.gui.api_gameslib.entities.Games;
 import com.gui.api_gameslib.Services.GamesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,9 @@ public class GamesController {
     private GamesService gamesService;
 
     @PostMapping("/add")
-    public ResponseEntity<Games> AddGames(@RequestBody Games games) {
-        Games addedGame = gamesService.AddGames(games);
-        return ResponseEntity.status(HttpStatus.CREATED).body(addedGame);
+    public ResponseEntity<Games> AddGames(@RequestBody GameRequest gameRequest) {
+        Games addedGame = gamesService.AddGames(gameRequest);
+        return ResponseEntity.ok(addedGame);
     }
 
     @GetMapping("/findAll")

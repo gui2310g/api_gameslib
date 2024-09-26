@@ -1,5 +1,6 @@
 package com.gui.api_gameslib.Services;
 
+import com.gui.api_gameslib.dto.GameRequest;
 import com.gui.api_gameslib.entities.Games;
 import com.gui.api_gameslib.entities.Platforms;
 import com.gui.api_gameslib.entities.Publishers;
@@ -23,9 +24,18 @@ public class GamesService {
 
     private final PublishersRepository publishersRepository;
 
-    public Games AddGames(Games games) throws GamesException {
-        if(gamesRepository.findByName(games.getName()).isPresent())
+    public Games AddGames(GameRequest gameRequest) throws GamesException {
+        if(gamesRepository.findByName(gameRequest.getName()).isPresent())
             throw new GamesException("This game already exists");
+
+        Games games = new Games();
+        games.setName(gameRequest.getName());
+        games.setSlug(gameRequest.getSlug());
+        games.setDescription(gameRequest.getDescription());
+        games.setReleased(gameRequest.getReleased());
+        games.setBackground_image(gameRequest.getBackground_image());
+        games.setImage_logo(gameRequest.getImage_logo());
+        games.setRating(gameRequest.getRating());
 
         return gamesRepository.save(games);
     }
