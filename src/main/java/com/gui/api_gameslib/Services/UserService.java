@@ -1,5 +1,6 @@
 package com.gui.api_gameslib.Services;
 
+import com.gui.api_gameslib.dto.UserRequest;
 import com.gui.api_gameslib.entities.Games;
 import com.gui.api_gameslib.entities.Users;
 import com.gui.api_gameslib.Repositories.GamesRepository;
@@ -22,16 +23,20 @@ public class UserService {
 
     private final GamesRepository gamesRepository;
 
-    public Users CreateUser(Users users) throws UserException {
-        if (usersRepository.findByEmail(users.getEmail()).isPresent())
+    public Users CreateUser(UserRequest userRequest) throws UserException {
+        if (usersRepository.findByEmail(userRequest.getEmail()).isPresent())
             throw new UserException("Email already exists");
 
-        if(usersRepository.findByUsername(users.getUsername()).isPresent())
+        if (usersRepository.findByUsername(userRequest.getUsername()).isPresent())
             throw new UserException("Someone use this username");
 
-        users.setPassword(passwordEncoder.encode(users.getPassword()));
+        Users user = new Users();
+        user.setUsername(userRequest.getUsername());
+        user.setEmail(userRequest.getEmail());
+        user.setName(userRequest.getName());
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
-        return usersRepository.save(users);
+        return usersRepository.save(user);
     }
 
     public List<Users> FindAllUsers() throws UserException {
@@ -48,20 +53,29 @@ public class UserService {
         );
     }
 
-    public Users updateUser(Users users, String username) throws UserException {
+    public Users updateUser(UserRequest userRequest, String username) throws UserException {
         Users existingUser = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserException("Can't find the user with this username to update"));
 
-        if(usersRepository.findByEmail(users.getEmail()).isPresent()
-                || usersRepository.findByUsername(users.getUsername()).isPresent()
-        ) throw new UserException("Can't update to this email or username because someone is using");
+        if (usersRepository.findByEmail(userRequest.getEmail()).isPresent()
+                && !existingUser.getEmail().equals(userRequest.getEmail())) {
+            throw new UserException("This email is already in use by another user");
+        }
 
-        if (users.getPassword() != null && passwordEncoder.matches(users.getPassword(), existingUser.getPassword()))
+        if (usersRepository.findByUsername(userRequest.getUsername()).isPresent()
+                && !existingUser.getUsername().equals(userRequest.getUsername())) {
+            throw new UserException("This username is already in use by another user");
+        }
+
+        if (userRequest.getPassword() != null
+                && passwordEncoder.matches(userRequest.getPassword(), existingUser.getPassword())) {
             throw new UserException("You are already using this password");
+        }
 
-        if (users.getUsername() != null) existingUser.setUsername(users.getUsername());
-        if (users.getEmail() != null) existingUser.setEmail(users.getEmail());
-        if (users.getPassword() != null)  existingUser.setPassword(passwordEncoder.encode(users.getPassword()));
+        if (userRequest.getUsername() != null) existingUser.setUsername(userRequest.getUsername());
+        if (userRequest.getEmail() != null) existingUser.setEmail(userRequest.getEmail());
+        if (userRequest.getPassword() != null)
+            existingUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
         return usersRepository.save(existingUser);
     }
@@ -93,7 +107,7 @@ public class UserService {
 
     public Users RemoveGamefromUser(String username, Integer gameId) throws UserException {
         Games game = gamesRepository.findById(gameId)
-               .orElseThrow(() -> new UserException("Can't find the game with this id"));
+                .orElseThrow(() -> new UserException("Can't find the game with this id"));
 
         Users existingUser = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new UserException("Can't find the user with this username to remove the game"));
