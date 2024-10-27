@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/genres")
 public class GenresController {
@@ -30,5 +32,11 @@ public class GenresController {
     public ResponseEntity<Genres> addGenresToGame(@PathVariable Integer genresId, @PathVariable Integer gameId) {
         Genres addedGenresToGame = genresService.addGenresToGame(genresId, gameId);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedGenresToGame);
+    }
+
+    @GetMapping("/game/{gameId}")
+    public ResponseEntity<List<Genres>> findAllGenresByGameId(@PathVariable Integer gameId) {
+        List<Genres> genres = genresService.findAllGenresByGameId(gameId);
+        return ResponseEntity.ok(genres);
     }
 }
