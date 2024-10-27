@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/platforms")
 public class PlatformsController {
@@ -29,6 +31,12 @@ public class PlatformsController {
     @GetMapping("/findAll")
     public ResponseEntity<Page<Platforms>> findAllPlatforms(@RequestParam int page, @RequestParam int size) {
         Page<Platforms> platforms = platformsService.findAllPlatforms(page, size);
+        return ResponseEntity.ok(platforms);
+    }
+
+    @GetMapping("/game/{gameId}")
+    public ResponseEntity<List<Platforms>> findAllPlatformsByGameId(@PathVariable Integer gameId) {
+        List<Platforms> platforms = platformsService.findAllPlatformsByGameId(gameId);
         return ResponseEntity.ok(platforms);
     }
 }
