@@ -58,6 +58,8 @@ public class PlatformsService {
         Games game = gamesRepository.findById(gameId)
                .orElseThrow(() -> new GamesException("Game not found with ID: " + gameId));
 
+        if(game.getPlatforms().isEmpty()) throw new GamesException("This game doesn't have platforms");
+
         return game.getPlatforms().stream().toList();
     }
 }
