@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class GenresService {
@@ -48,5 +50,14 @@ public class GenresService {
         if(genre.isEmpty()) throw new GamesException("There is no registered genres");
 
         return genre;
+    }
+
+    public List<Genres> findAllGenresByGameId(Integer gameId) throws GamesException {
+        Games game = gamesRepository.findById(gameId)
+                .orElseThrow(() -> new GamesException("There is no game with this id"));
+
+        if(game.getGenres().isEmpty()) throw new GamesException("This game doesn't have a genre");
+
+        return game.getGenres().stream().toList();
     }
 }
