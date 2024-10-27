@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class PlatformsService {
@@ -50,5 +52,12 @@ public class PlatformsService {
         if(platforms.isEmpty()) throw new GamesException("There is no registered platforms");
 
         return platforms;
+    }
+
+    public List<Platforms> findAllPlatformsByGameId(Integer gameId) throws GamesException {
+        Games game = gamesRepository.findById(gameId)
+               .orElseThrow(() -> new GamesException("Game not found with ID: " + gameId));
+
+        return game.getPlatforms().stream().toList();
     }
 }
