@@ -51,4 +51,13 @@ public class EsrbRatingsService {
 
         return esrbRatings;
     }
+
+    public List<EsrbRating> findEsrbRatingbyGameId(Integer gameId) throws GamesException {
+        Games game = gamesRepository.findById(gameId)
+               .orElseThrow(() -> new GamesException("Game not found with ID: " + gameId));
+
+        if (game.getEsrbRatings().isEmpty()) throw new GamesException("The game has no ratings");
+
+        return game.getEsrbRatings().stream().toList();
+    }
 }
