@@ -47,4 +47,13 @@ public class ScreenshotsService {
 
         return screenshots;
     }
+
+    public List<Screenshots> findAllScreenshotsByGameId(Integer gameId) throws GamesException {
+        Games game = gamesRepository.findById(gameId)
+               .orElseThrow(() -> new GamesException("Game not found with ID: " + gameId));
+
+        if(game.getScreenshots().isEmpty()) throw new GamesException("This game has no screenshots");
+
+        return game.getScreenshots().stream().toList();
+    }
 }
