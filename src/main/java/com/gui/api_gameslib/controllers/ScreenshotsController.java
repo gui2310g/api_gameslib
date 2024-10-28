@@ -34,4 +34,10 @@ public class ScreenshotsController {
         Screenshots addedScreenshot = screenshotsService.addScreenshotsToGame(screenshotId, gameId);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedScreenshot);
     }
+
+    @GetMapping("/game/{gameId}")
+    public ResponseEntity<List<Screenshots>> findAllScreenshotsByGameId(@PathVariable Integer gameId) {
+        List<Screenshots> screenshots = screenshotsService.findAllScreenshotsByGameId(gameId);
+        return ResponseEntity.ok(screenshots);
+    }
 }
