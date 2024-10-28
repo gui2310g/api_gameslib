@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/publishers")
 public class PublishersController {
@@ -30,5 +32,11 @@ public class PublishersController {
     public ResponseEntity<Publishers> addPublishersToGame(@PathVariable Integer publishersId, @PathVariable Integer gameId) {
         Publishers addedPublishersToGame = publishersService.addPublishersToGame(publishersId, gameId);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedPublishersToGame);
+    }
+
+    @GetMapping("/game/{gameId}")
+    public ResponseEntity<List<Publishers>> findAllPublishersByGameid(@PathVariable Integer gameId) {
+        List<Publishers> publishers = publishersService.findAllPublishersByGameid(gameId);
+        return ResponseEntity.ok(publishers);
     }
 }
