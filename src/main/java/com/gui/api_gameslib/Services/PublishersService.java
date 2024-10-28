@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class PublishersService {
@@ -47,5 +49,14 @@ public class PublishersService {
         gamesRepository.save(games);
 
         return publishers;
+    }
+
+    public List<Publishers> findAllPublishersByGameid(Integer gameId) throws GamesException {
+        Games game = gamesRepository.findById(gameId)
+               .orElseThrow(() -> new GamesException("Game not found with ID: " + gameId));
+
+        if(game.getPublishers().isEmpty()) throw new GamesException("No publishers found for this game");
+
+        return game.getPublishers().stream().toList();
     }
 }
