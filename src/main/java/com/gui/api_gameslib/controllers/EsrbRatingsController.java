@@ -32,4 +32,10 @@ public class EsrbRatingsController {
         List<EsrbRating> esrbRatings = esrbRatingsService.findAllEsrbRatings();
         return ResponseEntity.ok(esrbRatings);
     }
+
+    @GetMapping("/game/{gameId}")
+    public ResponseEntity<List<EsrbRating>> findEsrbRatingByGameId(@PathVariable Integer gameId) {
+        List<EsrbRating> esrbRatings = esrbRatingsService.findEsrbRatingbyGameId(gameId);
+        return ResponseEntity.ok(esrbRatings);
+    }
 }
