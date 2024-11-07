@@ -26,7 +26,7 @@ public class Users {
 
     @Column(name = "password", nullable = false)
     private String password;
-
+    
     @ManyToMany
     @JoinTable(
             name = "users_wishlistGames",

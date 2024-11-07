@@ -37,7 +37,7 @@ public class PublishersService {
 
     public Publishers addPublishersToGame(Integer publishersid, Integer gameId) throws GamesException {
         Games games = gamesRepository.findById(gameId)
-                .orElseThrow(() -> new GamesException("Could not find a game with this id"));
+                .orElseThrow(() -> new GamesException("Could not find a game with this id: " + gameId));
 
         Publishers publishers = publishersRepository.findById(publishersid)
                 .orElseThrow(() -> new GamesException("Could not find a publisher"));

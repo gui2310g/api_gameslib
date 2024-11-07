@@ -25,7 +25,7 @@ public class GamesService {
     private final PublishersRepository publishersRepository;
 
     public Games AddGames(GameRequest gameRequest) throws GamesException {
-        if(gamesRepository.findByName(gameRequest.getName()).isPresent())
+        if (gamesRepository.findByName(gameRequest.getName()).isPresent())
             throw new GamesException("This game already exists");
 
         Games games = new Games();
@@ -57,14 +57,14 @@ public class GamesService {
     public List<Games> SearchGames(String name) throws GamesException {
         List<Games> games = gamesRepository.findByNameContainingIgnoreCase(name);
 
-        if(games == null || games.isEmpty()) throw new GamesException("There is no registered games with this name");
+        if (games == null || games.isEmpty()) throw new GamesException("There is no registered games with this name");
 
         return games;
     }
 
     public List<Games> findGamesByPlatformsId(Integer platformsId) throws GamesException {
         Platforms platform = platformsRepository.findById(platformsId)
-                .orElseThrow(() -> new GamesException("No games found with this platform id"));
+                .orElseThrow(() -> new GamesException("No games found with this platform id: " + platformsId));
 
         List<Games> games = gamesRepository.findByPlatformsId(platformsId);
 
@@ -75,12 +75,37 @@ public class GamesService {
 
     public List<Games> findGamesByPublishersId(Integer publishersId) throws GamesException {
         Publishers publishers = publishersRepository.findById(publishersId)
-                .orElseThrow(() -> new GamesException("No games found with this publisher id"));
+                .orElseThrow(() -> new GamesException("No games found with this publisher id: " + publishersId));
 
         List<Games> games = gamesRepository.findByPublishersId(publishersId);
 
-        if(games.isEmpty()) throw new GamesException("No games found for this publisher");
+        if (games.isEmpty()) throw new GamesException("No games found for this publisher");
 
         return games;
     }
+
+    public List<Games> filterGames(Integer genresId, Integer platformsId, Integer publishersId) throws GamesException {
+        List<Games> games = gamesRepository.findAll();
+
+        if (genresId != null)
+            games = games.stream()
+                    .filter(g -> g.getGenres().stream().anyMatch(genre -> genre.getId().equals(genresId)))
+                    .toList();
+
+        if (platformsId != null)
+            games = games.stream()
+                    .filter(g -> g.getPlatforms().stream().anyMatch(platform -> platform.getId().equals(platformsId)))
+                    .toList();
+
+        if (publishersId != null)
+            games = games.stream()
+                    .filter(g -> g.getPublishers().stream()
+                            .anyMatch(publisher -> publisher.getId().equals(publishersId)))
+                    .toList();
+
+        if (games.isEmpty()) throw new GamesException("No games found with these filters");
+
+        return games;
+    }
+
 }

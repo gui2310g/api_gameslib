@@ -5,7 +5,6 @@ import com.gui.api_gameslib.entities.Games;
 import com.gui.api_gameslib.Services.GamesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +49,15 @@ public class GamesController {
     @GetMapping("/search/publishers/{publishersId}")
     public ResponseEntity<List<Games>> findGamesByPublishersId(@PathVariable Integer publishersId) {
         List<Games> games = gamesService.findGamesByPublishersId(publishersId);
+        return ResponseEntity.ok(games);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Games>> filterGames(
+            @RequestParam(required = false) Integer genresId,
+            @RequestParam(required = false) Integer platformsId,
+            @RequestParam(required = false) Integer publishersId) {
+        List<Games> games = gamesService.filterGames(genresId, platformsId, publishersId);
         return ResponseEntity.ok(games);
     }
 }

@@ -54,7 +54,7 @@ public class GenresService {
 
     public List<Genres> findAllGenresByGameId(Integer gameId) throws GamesException {
         Games game = gamesRepository.findById(gameId)
-                .orElseThrow(() -> new GamesException("There is no game with this id"));
+                .orElseThrow(() -> new GamesException("There is no game with this id: " + gameId));
 
         if(game.getGenres().isEmpty()) throw new GamesException("This game doesn't have a genre");
 
