@@ -4,11 +4,12 @@ import lombok.Data;
 
 @Data
 public class GameRequest {
-    private final String slug;
-    private final String name;
-    private final String description;
-    private final String released;
-    private final String background_image;
-    private final String image_logo;
-    private final Integer rating;
+    private Integer id;
+    private String slug;
+    private String name;
+    private String description;
+    private String released;
+    private String background_image;
+    private String image_logo;
+    private Integer rating;
 }

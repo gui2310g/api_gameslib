@@ -34,6 +34,7 @@ build/
 .vscode/
 
 ## envs and keys ##
+src/main/resources
 src/main/resources/application.properties
 src/main/resources/app.key
 src/main/resources/app.pub

@@ -8,46 +8,44 @@ import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.PlatformsRepository;
 import com.gui.api_gameslib.Repositories.PublishersRepository;
 import com.gui.api_gameslib.exceptions.GamesException;
+import com.gui.api_gameslib.mappers.GameMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 public class GamesService {
     private final GamesRepository gamesRepository;
+    
+    private final GameMapper gameMapper;
 
     private final PlatformsRepository platformsRepository;
 
     private final PublishersRepository publishersRepository;
 
-    public Games AddGames(GameRequest gameRequest) throws GamesException {
+    public GameRequest AddGames(GameRequest gameRequest) throws GamesException {
         if (gamesRepository.findByName(gameRequest.getName()).isPresent())
             throw new GamesException("This game already exists");
 
-        Games games = new Games();
-        games.setName(gameRequest.getName());
-        games.setSlug(gameRequest.getSlug());
-        games.setDescription(gameRequest.getDescription());
-        games.setReleased(gameRequest.getReleased());
-        games.setBackground_image(gameRequest.getBackground_image());
-        games.setImage_logo(gameRequest.getImage_logo());
-        games.setRating(gameRequest.getRating());
+        Games games = gameMapper.toEntity(gameRequest);
+        Games createdGame = gamesRepository.save(games);
 
-        return gamesRepository.save(games);
+        return gameMapper.toDto(createdGame);
     }
 
-    public Page<Games> FindAllGames(int page, int size) throws GamesException {
+    public Page<Games> FindAllGamesByPagination(int page, int size) throws GamesException {
         Page<Games> games = gamesRepository.findAll(PageRequest.of(page, size));
 
         if (page >= games.getTotalPages()) throw new GamesException("Page number out of bounds");
 
         if (games.isEmpty()) throw new GamesException("There is no registered games");
 
-        return games;
+        return games;   
     }
 
     public Games FindGamesById(Integer id) throws GamesException {
@@ -89,12 +87,14 @@ public class GamesService {
 
         if (genresId != null)
             games = games.stream()
-                    .filter(g -> g.getGenres().stream().anyMatch(genre -> genre.getId().equals(genresId)))
+                    .filter(g -> g.getGenres().stream()
+                            .anyMatch(genre -> genre.getId().equals(genresId)))
                     .toList();
 
         if (platformsId != null)
             games = games.stream()
-                    .filter(g -> g.getPlatforms().stream().anyMatch(platform -> platform.getId().equals(platformsId)))
+                    .filter(g -> g.getPlatforms().stream()
+                            .anyMatch(platform -> platform.getId().equals(platformsId)))
                     .toList();
 
         if (publishersId != null)
