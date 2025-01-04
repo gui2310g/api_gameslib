@@ -13,18 +13,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/genres")
 public class GenresController {
+
     @Autowired
     private GenresService genresService;
 
-    @PostMapping("/add")
     public ResponseEntity<Genres> addGenres(@RequestBody Genres genres) {
         Genres addedGenre = genresService.addGenres(genres);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedGenre);
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<Page<Genres>> findAllGenres(@RequestParam int page, @RequestParam int size) {
-        Page<Genres> genres = genresService.findAllGenres(page, size);
+    public ResponseEntity<List<Genres>> findAllGenres() {
+        List<Genres> genres = genresService.findAllGenres();
+        return ResponseEntity.ok(genres);
+    }
+
+    @GetMapping("/findAllByPage")
+    public ResponseEntity<Page<Genres>> findGenresByPagination(@RequestParam int page, @RequestParam int size) {
+        Page<Genres> genres = genresService.findGenresByPagination(page, size);
         return ResponseEntity.ok(genres);
     }
 

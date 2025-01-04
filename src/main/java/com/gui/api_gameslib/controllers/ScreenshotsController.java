@@ -12,10 +12,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/screenshots")
 public class ScreenshotsController {
+
     @Autowired
     private ScreenshotsService screenshotsService;
 
-    @PostMapping("/add")
     public ResponseEntity<Screenshots> addScreenshotToGame(@RequestBody Screenshots screenshots) {
         Screenshots addedScreenshot = screenshotsService.addScreenshotToGame(screenshots);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedScreenshot);
@@ -29,7 +29,8 @@ public class ScreenshotsController {
 
     @PostMapping("/add/{gameId}/{screenshotId}")
     public ResponseEntity<Screenshots> addScreenshotsToGame(
-            @PathVariable Integer screenshotId, @PathVariable Integer gameId
+            @PathVariable Integer screenshotId,
+            @PathVariable Integer gameId
     ) {
         Screenshots addedScreenshot = screenshotsService.addScreenshotsToGame(screenshotId, gameId);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedScreenshot);

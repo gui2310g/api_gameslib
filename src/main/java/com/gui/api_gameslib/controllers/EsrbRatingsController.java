@@ -12,17 +12,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/ratings")
 public class EsrbRatingsController {
+
     @Autowired
     private EsrbRatingsService esrbRatingsService;
 
-    @PostMapping("/add")
     public ResponseEntity<EsrbRating> AddEsrbRatings(@RequestBody EsrbRating esrbRating) {
         EsrbRating createdRating = esrbRatingsService.AddEsrbRatings(esrbRating);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRating);
     }
 
     @PostMapping("/add/{gameId}/{EsrbRatingsId}")
-    public ResponseEntity<EsrbRating> AddEsrbRatingsToGame(@PathVariable Integer EsrbRatingsId, @PathVariable Integer gameId) {
+    public ResponseEntity<EsrbRating> AddEsrbRatingsToGame(
+            @PathVariable Integer EsrbRatingsId,
+            @PathVariable Integer gameId
+    ) {
         EsrbRating addRatings = esrbRatingsService.addEsrbRatingsToGame(EsrbRatingsId, gameId);
         return ResponseEntity.status(HttpStatus.CREATED).body(addRatings);
     }

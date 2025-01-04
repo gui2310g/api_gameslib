@@ -13,24 +13,33 @@ import java.util.List;
 @RestController
 @RequestMapping("/platforms")
 public class PlatformsController {
+
     @Autowired
     private PlatformsService platformsService;
 
-    @PostMapping("/add")
     public ResponseEntity<Platforms> AddPlatforms(@RequestBody Platforms platforms) {
         Platforms addedPlatforms = platformsService.addPlatform(platforms);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedPlatforms);
     }
 
     @PostMapping("/add/{gameId}/{platformsId}")
-    public ResponseEntity<Platforms> addPlatformToGame(@PathVariable Integer platformsId, @PathVariable Integer gameId) {
+    public ResponseEntity<Platforms> addPlatformToGame(
+            @PathVariable Integer platformsId,
+            @PathVariable Integer gameId
+    ) {
         Platforms addedPlatformsToGame = platformsService.addPlatformToGame(platformsId, gameId);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedPlatformsToGame);
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<Page<Platforms>> findAllPlatforms(@RequestParam int page, @RequestParam int size) {
-        Page<Platforms> platforms = platformsService.findAllPlatforms(page, size);
+    public ResponseEntity<List<Platforms>> findAllPlatforms() {
+        List<Platforms> platforms = platformsService.findAllPlatforms();
+        return ResponseEntity.ok(platforms);
+    }
+
+    @GetMapping("/findAllByPage")
+    public ResponseEntity<Page<Platforms>> findPlatformsByPagination(@RequestParam int page, @RequestParam int size) {
+        Page<Platforms> platforms = platformsService.findPlatformsByPagination(page, size);
         return ResponseEntity.ok(platforms);
     }
 

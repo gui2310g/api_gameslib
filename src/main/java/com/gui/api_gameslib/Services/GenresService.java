@@ -42,7 +42,15 @@ public class GenresService {
         return genre;
     }
 
-    public Page<Genres> findAllGenres(int page, int size) throws GamesException {
+    public List<Genres> findAllGenres() throws GamesException {
+        List<Genres> genres = genresRepository.findAll();
+
+        if (genres.isEmpty()) throw new GamesException("There is no registered genres");
+
+        return genres;
+    }
+
+    public Page<Genres> findGenresByPagination(int page, int size) throws GamesException {
         Page<Genres> genre = genresRepository.findAll(PageRequest.of(page, size));
 
         if (page >= genre.getTotalPages()) throw new GamesException("Page number out of bounds");

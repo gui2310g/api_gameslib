@@ -44,7 +44,14 @@ public class PlatformsService {
         return platform;
     }
 
-    public Page<Platforms> findAllPlatforms(int page, int size) throws GamesException {
+    public List<Platforms> findAllPlatforms() throws GamesException {
+        List<Platforms> platforms = platformsRepository.findAll();
+
+        if(platforms.isEmpty()) throw new GamesException("There is no registered platforms");
+
+        return platforms;
+    }
+    public Page<Platforms> findPlatformsByPagination(int page, int size) throws GamesException {
         Page<Platforms> platforms = platformsRepository.findAll(PageRequest.of(page, size));
 
         if (page >= platforms.getTotalPages()) throw new GamesException("Page number out of bounds");

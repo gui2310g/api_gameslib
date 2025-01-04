@@ -25,7 +25,15 @@ public class PublishersService {
         return publishersRepository.save(publishers);
     }
 
-    public Page<Publishers> findAllPublishers(int page, int size) throws GamesException {
+    public List<Publishers> findAllPublishers() throws GamesException {
+        List<Publishers> publishers = publishersRepository.findAll();
+
+        if(publishers.isEmpty()) throw new GamesException("There is no registered publishers");
+
+        return publishers;
+    }
+
+    public Page<Publishers> findPublishersByPagination(int page, int size) throws GamesException {
         Page<Publishers> publishers = publishersRepository.findAll(PageRequest.of(page, size));
 
         if (page >= publishers.getTotalPages()) throw new GamesException("Page number out of bounds");
