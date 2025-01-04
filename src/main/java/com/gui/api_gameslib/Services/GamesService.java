@@ -10,7 +10,6 @@ import com.gui.api_gameslib.Repositories.PublishersRepository;
 import com.gui.api_gameslib.exceptions.GamesException;
 import com.gui.api_gameslib.mappers.GameMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,15 @@ public class GamesService {
         return gameMapper.toDto(createdGame);
     }
 
-    public Page<Games> FindAllGamesByPagination(int page, int size) throws GamesException {
+    public List<Games> findAllGames() throws GamesException {
+        List<Games> games = gamesRepository.findAll();
+
+        if (games.isEmpty()) throw new GamesException("There is no registered games");
+
+        return games;
+    }
+
+    public Page<Games> FindGamesByPagination(int page, int size) throws GamesException {
         Page<Games> games = gamesRepository.findAll(PageRequest.of(page, size));
 
         if (page >= games.getTotalPages()) throw new GamesException("Page number out of bounds");

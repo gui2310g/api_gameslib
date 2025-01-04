@@ -17,15 +17,20 @@ public class GamesController {
     @Autowired
     private GamesService gamesService;
 
-    @PostMapping("/add")
     public ResponseEntity<GameRequest> AddGames(@RequestBody GameRequest gameRequest) {
         GameRequest addedGame = gamesService.AddGames(gameRequest);
         return ResponseEntity.ok(addedGame);
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<Page<Games>> FindAllGames(@RequestParam int page, @RequestParam int size) {
-        Page<Games> games = gamesService.FindAllGames(page, size);
+    public ResponseEntity<List<Games>> findAllGames() {
+        List<Games> games = gamesService.findAllGames();
+        return ResponseEntity.ok(games);
+    }
+
+    @GetMapping("/findAllByPage")
+    public ResponseEntity<Page<Games>> FindGamesByPagination(@RequestParam int page, @RequestParam int size) {
+        Page<Games> games = gamesService.FindGamesByPagination(page, size);
         return ResponseEntity.ok(games);
     }
 
