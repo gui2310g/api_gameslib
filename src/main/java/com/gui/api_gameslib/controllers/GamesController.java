@@ -17,6 +17,7 @@ public class GamesController {
     @Autowired
     private GamesService gamesService;
 
+    @PostMapping
     public ResponseEntity<GameRequest> AddGames(@RequestBody GameRequest gameRequest) {
         GameRequest addedGame = gamesService.AddGames(gameRequest);
         return ResponseEntity.ok(addedGame);

@@ -7,6 +7,7 @@ import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.UsersRepository;
 import com.gui.api_gameslib.exceptions.UserException;
 
+import com.gui.api_gameslib.mappers.UserMapper;
 import lombok.AllArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,24 +20,24 @@ import java.util.List;
 public class UserService {
     private final UsersRepository usersRepository;
 
+    private final UserMapper userMapper;
+
     private final PasswordEncoder passwordEncoder;
 
     private final GamesRepository gamesRepository;
 
-    public Users CreateUser(UserRequest userRequest) throws UserException {
+    public UserRequest CreateUser(UserRequest userRequest) throws UserException {
         if (usersRepository.findByEmail(userRequest.getEmail()).isPresent())
             throw new UserException("Email already exists");
 
         if (usersRepository.findByUsername(userRequest.getUsername()).isPresent())
             throw new UserException("Someone use this username");
 
-        Users user = new Users();
-        user.setUsername(userRequest.getUsername());
-        user.setEmail(userRequest.getEmail());
-        user.setName(userRequest.getName());
+        Users user = userMapper.toEntity(userRequest);
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        Users createdUser = usersRepository.save(user);
 
-        return usersRepository.save(user);
+        return userMapper.toDto(createdUser);
     }
 
     public List<Users> FindAllUsers() throws UserException {

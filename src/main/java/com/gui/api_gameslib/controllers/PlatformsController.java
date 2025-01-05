@@ -17,6 +17,7 @@ public class PlatformsController {
     @Autowired
     private PlatformsService platformsService;
 
+    @PostMapping
     public ResponseEntity<Platforms> AddPlatforms(@RequestBody Platforms platforms) {
         Platforms addedPlatforms = platformsService.addPlatform(platforms);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedPlatforms);

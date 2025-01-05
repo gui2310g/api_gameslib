@@ -17,6 +17,7 @@ public class GenresController {
     @Autowired
     private GenresService genresService;
 
+    @PostMapping
     public ResponseEntity<Genres> addGenres(@RequestBody Genres genres) {
         Genres addedGenre = genresService.addGenres(genres);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedGenre);

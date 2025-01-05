@@ -16,6 +16,7 @@ public class ScreenshotsController {
     @Autowired
     private ScreenshotsService screenshotsService;
 
+    @PostMapping
     public ResponseEntity<Screenshots> addScreenshotToGame(@RequestBody Screenshots screenshots) {
         Screenshots addedScreenshot = screenshotsService.addScreenshotToGame(screenshots);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedScreenshot);

@@ -19,9 +19,9 @@ public class UsersController {
 
     private String getUsername(Authentication authentication) { return authentication.getName(); }
 
-    @PostMapping("/create")
-    public ResponseEntity<Users> CreateUser(@RequestBody UserRequest userRequest) {
-        Users createdUser = userService.CreateUser(userRequest);
+    @PostMapping
+    public ResponseEntity<UserRequest> CreateUser(@RequestBody UserRequest userRequest) {
+        UserRequest createdUser = userService.CreateUser(userRequest);
         return ResponseEntity.ok(createdUser);
     }
 

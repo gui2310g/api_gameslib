@@ -16,6 +16,7 @@ public class EsrbRatingsController {
     @Autowired
     private EsrbRatingsService esrbRatingsService;
 
+    @PostMapping
     public ResponseEntity<EsrbRating> AddEsrbRatings(@RequestBody EsrbRating esrbRating) {
         EsrbRating createdRating = esrbRatingsService.AddEsrbRatings(esrbRating);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRating);

@@ -17,6 +17,7 @@ public class PublishersController {
     @Autowired
     private PublishersService publishersService;
 
+    @PostMapping
     public ResponseEntity<Publishers> addPublishers(@RequestBody Publishers publishers) {
         Publishers addedPublisher = publishersService.addPublishers(publishers);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedPublisher);
