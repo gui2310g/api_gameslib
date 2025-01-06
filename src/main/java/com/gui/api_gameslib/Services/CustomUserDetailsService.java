@@ -1,6 +1,7 @@
-package com.gui.api_gameslib.infra;
+package com.gui.api_gameslib.Services;
 
 import com.gui.api_gameslib.Repositories.UsersRepository;
+import com.gui.api_gameslib.config.UserAuthenticated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

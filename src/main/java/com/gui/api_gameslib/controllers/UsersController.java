@@ -1,5 +1,6 @@
 package com.gui.api_gameslib.controllers;
 
+import com.gui.api_gameslib.Services.AuthenticationService;
 import com.gui.api_gameslib.Services.UserService;
 import com.gui.api_gameslib.dto.UserRequest;
 import com.gui.api_gameslib.entities.Users;
@@ -14,10 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UsersController {
+
     @Autowired
     private UserService userService;
 
-    private String getUsername(Authentication authentication) { return authentication.getName(); }
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @PostMapping
     public ResponseEntity<UserRequest> CreateUser(@RequestBody UserRequest userRequest) {
@@ -39,29 +42,33 @@ public class UsersController {
 
     @PutMapping("/update")
     @SecurityRequirement(name = "Bearer Authentication")
-    public ResponseEntity<Users> updateUser(@RequestBody UserRequest userRequest, Authentication authentication) {
-        Users updatedUser = userService.updateUser(userRequest, getUsername(authentication));
+    public ResponseEntity<UserRequest> updateUser(@RequestBody UserRequest userRequest, Authentication authentication) {
+        Integer userId = authenticationService.getAuthenticatedUserId(authentication);
+        UserRequest updatedUser = userService.updateUser(userRequest, userId);
         return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/delete")
     @SecurityRequirement(name = "Bearer Authentication")
-    public ResponseEntity<String> deleteUser(Authentication authentication) {
-        Users deletedUser = userService.DeleteUser(getUsername(authentication));
-        return ResponseEntity.ok("user deleted");
+    public ResponseEntity<UserRequest> deleteUser(UserRequest userRequest, Authentication authentication) {
+        Integer userId = authenticationService.getAuthenticatedUserId(authentication);
+        UserRequest deletedUser = userService.DeleteUser(userRequest, userId);
+        return ResponseEntity.ok(deletedUser);
     }
 
     @PostMapping("/wishlist/add/{gameId}")
     @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<Users> addGameToUser(@PathVariable Integer gameId, Authentication authentication) {
-        Users user = userService.AddGamestoUser(getUsername(authentication), gameId);
+        Integer userId = authenticationService.getAuthenticatedUserId(authentication);
+        Users user = userService.AddGamestoUser(userId, gameId);
         return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/wishlist/delete/{gameId}")
     @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<Users> RemoveGamefromUser(@PathVariable Integer gameId, Authentication authentication) {
-        Users user = userService.RemoveGamefromUser(getUsername(authentication), gameId);
+        Integer userId = authenticationService.getAuthenticatedUserId(authentication);
+        Users user = userService.RemoveGamefromUser(userId, gameId);
         return ResponseEntity.ok(user);
     }
 }

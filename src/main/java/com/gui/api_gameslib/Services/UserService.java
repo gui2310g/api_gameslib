@@ -54,8 +54,8 @@ public class UserService {
         );
     }
 
-    public Users updateUser(UserRequest userRequest, String username) throws UserException {
-        Users existingUser = usersRepository.findByUsername(username)
+    public UserRequest updateUser(UserRequest userRequest, Integer id) throws UserException {
+        Users existingUser = usersRepository.findById(id)
                 .orElseThrow(() -> new UserException("Can't find the user with this username to update"));
 
         if (usersRepository.findByEmail(userRequest.getEmail()).isPresent()
@@ -63,10 +63,7 @@ public class UserService {
             throw new UserException("This email is already in use by another user");
         }
 
-        if (usersRepository.findByUsername(userRequest.getUsername()).isPresent()
-                && !existingUser.getUsername().equals(userRequest.getUsername())) {
-            throw new UserException("This username is already in use by another user");
-        }
+        if (userRequest.getUsername() != null) throw new UserException("You can't update the username");
 
         if (userRequest.getPassword() != null
                 && passwordEncoder.matches(userRequest.getPassword(), existingUser.getPassword())) {
@@ -78,23 +75,23 @@ public class UserService {
         if (userRequest.getPassword() != null)
             existingUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
-        return usersRepository.save(existingUser);
+        return userMapper.toDto(existingUser);
     }
 
-    public Users DeleteUser(String username) throws UserException {
-        Users existingUser = usersRepository.findByUsername(username)
+    public UserRequest DeleteUser(UserRequest userRequest, Integer id) throws UserException {
+        Users existingUser = usersRepository.findById(id)
                 .orElseThrow(() -> new UserException("Can't find the user with this username to delete"));
 
         usersRepository.delete(existingUser);
 
-        return existingUser;
+        return userMapper.toDto(existingUser);
     }
 
-    public Users AddGamestoUser(String username, Integer gameId) throws UserException {
+    public Users AddGamestoUser(Integer id, Integer gameId) throws UserException {
         Games game = gamesRepository.findById(gameId)
                 .orElseThrow(() -> new UserException("Can't find the game with this id"));
 
-        Users existingUser = usersRepository.findByUsername(username)
+        Users existingUser = usersRepository.findById(id)
                 .orElseThrow(() -> new UserException("Can't find the user with this username to add the game"));
 
         if (existingUser.getWishlistGames().stream().anyMatch(p -> p.getId().equals(gameId)))
@@ -106,11 +103,11 @@ public class UserService {
         return existingUser;
     }
 
-    public Users RemoveGamefromUser(String username, Integer gameId) throws UserException {
+    public Users RemoveGamefromUser(Integer id, Integer gameId) throws UserException {
         Games game = gamesRepository.findById(gameId)
                 .orElseThrow(() -> new UserException("Can't find the game with this id"));
 
-        Users existingUser = usersRepository.findByUsername(username)
+        Users existingUser = usersRepository.findById(id)
                 .orElseThrow(() -> new UserException("Can't find the user with this username to remove the game"));
 
         if (!existingUser.getWishlistGames().contains(game))

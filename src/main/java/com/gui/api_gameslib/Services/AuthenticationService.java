@@ -3,7 +3,7 @@ package com.gui.api_gameslib.Services;
 import com.gui.api_gameslib.Repositories.UsersRepository;
 import com.gui.api_gameslib.entities.Users;
 import com.gui.api_gameslib.exceptions.AuthException;
-import com.gui.api_gameslib.infra.JwtService;
+import com.gui.api_gameslib.config.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,5 +31,12 @@ public class AuthenticationService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), password);
 
         return jwtService.generateToken(authentication);
+    }
+
+    public Integer getAuthenticatedUserId(Authentication authentication) {
+        String username = authentication.getName();
+        Users user = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getId();
     }
 }
