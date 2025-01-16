@@ -1,5 +1,6 @@
 package com.gui.api_gameslib.Services;
 
+import com.gui.api_gameslib.Repositories.UsersRepository;
 import com.gui.api_gameslib.dto.GameRequest;
 import com.gui.api_gameslib.entities.Games;
 import com.gui.api_gameslib.entities.Platforms;
@@ -7,6 +8,7 @@ import com.gui.api_gameslib.entities.Publishers;
 import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.PlatformsRepository;
 import com.gui.api_gameslib.Repositories.PublishersRepository;
+import com.gui.api_gameslib.entities.Users;
 import com.gui.api_gameslib.exceptions.GamesException;
 import com.gui.api_gameslib.mappers.GameMapper;
 import lombok.AllArgsConstructor;
@@ -15,12 +17,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class GamesService {
     private final GamesRepository gamesRepository;
-    
+
+    private final UsersRepository usersRepository;
+
     private final GameMapper gameMapper;
 
     private final PlatformsRepository platformsRepository;
@@ -76,6 +81,13 @@ public class GamesService {
         if (games.isEmpty()) throw new GamesException("No games found for this platform");
 
         return games;
+    }
+
+    public Set<Games> findWishlistGamesByUser(Integer userId) throws GamesException {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new GamesException("User not found"));
+
+        return user.getWishlistGames();
     }
 
     public List<Games> findGamesByPublishersId(Integer publishersId) throws GamesException {

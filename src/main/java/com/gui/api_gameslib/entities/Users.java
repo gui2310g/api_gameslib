@@ -18,9 +18,6 @@ public class Users {
     @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
     @Column(name = "email", nullable = false)
     private String email;
 
