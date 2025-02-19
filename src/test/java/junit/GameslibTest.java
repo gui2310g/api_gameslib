@@ -1,8 +1,8 @@
 package junit;
 
-import com.gui.api_gameslib.entities.Games;
-import com.gui.api_gameslib.entities.Platforms;
-import com.gui.api_gameslib.entities.Users;
+import com.gui.api_gameslib.domain.entities.Games;
+import com.gui.api_gameslib.domain.entities.Platforms;
+import com.gui.api_gameslib.domain.entities.Users;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

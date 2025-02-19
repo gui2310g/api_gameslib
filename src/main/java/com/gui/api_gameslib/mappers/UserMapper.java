@@ -2,7 +2,7 @@ package com.gui.api_gameslib.mappers;
 
 import com.gui.api_gameslib.dto.user.UserRequest;
 import com.gui.api_gameslib.dto.user.UserResponse;
-import com.gui.api_gameslib.entities.Users;
+import com.gui.api_gameslib.domain.entities.Users;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

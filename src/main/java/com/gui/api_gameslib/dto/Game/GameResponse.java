@@ -1,10 +1,9 @@
 package com.gui.api_gameslib.dto.Game;
 
-import com.gui.api_gameslib.entities.*;
+import com.gui.api_gameslib.domain.entities.*;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 public class GameResponse {
@@ -18,7 +17,7 @@ public class GameResponse {
     private Integer rating;
     private List<Platforms> platforms;
     private List<EsrbRating> esrbRatings;
-    private List<Screenshots> Screenshots;
-    private List<Genres> Genres;
+    private List<com.gui.api_gameslib.domain.entities.Screenshots> Screenshots;
+    private List<com.gui.api_gameslib.domain.entities.Genres> Genres;
     private List<Publishers> publishers;
 }

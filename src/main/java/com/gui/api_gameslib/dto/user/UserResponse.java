@@ -1,9 +1,8 @@
 package com.gui.api_gameslib.dto.user;
 
-import com.gui.api_gameslib.entities.Games;
+import com.gui.api_gameslib.domain.entities.Games;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Set;
 
 @Data
