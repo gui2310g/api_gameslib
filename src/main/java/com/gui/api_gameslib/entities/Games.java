@@ -3,6 +3,7 @@ package com.gui.api_gameslib.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -40,7 +41,7 @@ public class Games {
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "platform_id")
     )
-    private Set<Platforms> platforms;
+    private List<Platforms> platforms;
 
     @ManyToMany
     @JoinTable(
@@ -48,7 +49,7 @@ public class Games {
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "rating_id")
     )
-    private Set<EsrbRating> esrbRatings;
+    private List<EsrbRating> esrbRatings;
 
     @ManyToMany
     @JoinTable(
@@ -56,7 +57,7 @@ public class Games {
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "screenshot_id")
     )
-    private Set<Screenshots> Screenshots;
+    private List<Screenshots> Screenshots;
 
     @ManyToMany
     @JoinTable(
@@ -64,7 +65,7 @@ public class Games {
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
-    private Set<Genres> Genres;
+    private List<Genres> Genres;
 
     @ManyToMany
     @JoinTable(
@@ -72,5 +73,5 @@ public class Games {
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "developer_id")
     )
-    private Set<Publishers> publishers;
+    private List<Publishers> publishers;
 }

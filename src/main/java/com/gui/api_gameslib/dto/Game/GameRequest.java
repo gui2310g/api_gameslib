@@ -1,4 +1,4 @@
-package com.gui.api_gameslib.dto;
+package com.gui.api_gameslib.dto.Game;
 
 import lombok.Data;
 
@@ -12,4 +12,5 @@ public class GameRequest {
     private String background_image;
     private String image_logo;
     private Integer rating;
+
 }

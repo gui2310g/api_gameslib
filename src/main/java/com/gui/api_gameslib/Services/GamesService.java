@@ -1,130 +1,65 @@
 package com.gui.api_gameslib.Services;
 
-import com.gui.api_gameslib.Repositories.UsersRepository;
-import com.gui.api_gameslib.dto.GameRequest;
-import com.gui.api_gameslib.entities.Games;
-import com.gui.api_gameslib.entities.Platforms;
-import com.gui.api_gameslib.entities.Publishers;
-import com.gui.api_gameslib.Repositories.GamesRepository;
-import com.gui.api_gameslib.Repositories.PlatformsRepository;
-import com.gui.api_gameslib.Repositories.PublishersRepository;
-import com.gui.api_gameslib.entities.Users;
+import com.gui.api_gameslib.Repositories.*;
+import com.gui.api_gameslib.dto.Game.GameRequest;
+import com.gui.api_gameslib.dto.Game.GameResponse;
+import com.gui.api_gameslib.entities.*;
 import com.gui.api_gameslib.exceptions.GamesException;
+import com.gui.api_gameslib.exceptions.UserException;
 import com.gui.api_gameslib.mappers.GameMapper;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class GamesService {
     private final GamesRepository gamesRepository;
 
-    private final UsersRepository usersRepository;
-
     private final GameMapper gameMapper;
 
-    private final PlatformsRepository platformsRepository;
+    private final UsersRepository usersRepository;
 
-    private final PublishersRepository publishersRepository;
-
-    public GameRequest AddGames(GameRequest gameRequest) throws GamesException {
+    public GameResponse AddGames(GameRequest gameRequest) {
         if (gamesRepository.findByName(gameRequest.getName()).isPresent())
             throw new GamesException("This game already exists");
 
         Games games = gameMapper.toEntity(gameRequest);
-        Games createdGame = gamesRepository.save(games);
 
-        return gameMapper.toDto(createdGame);
+        return gameMapper.toDto(gamesRepository.save(games));
     }
 
-    public List<Games> findAllGames() throws GamesException {
-        List<Games> games = gamesRepository.findAll();
-
-        if (games.isEmpty()) throw new GamesException("There is no registered games");
-
-        return games;
+    public List<GameResponse> findAllGames() {
+        return gamesRepository.findAll().stream().map(this::toDto).toList();
     }
 
-    public Page<Games> FindGamesByPagination(int page, int size) throws GamesException {
+    public Page<GameResponse> FindGamesByPagination(int page, int size) {
         Page<Games> games = gamesRepository.findAll(PageRequest.of(page, size));
 
         if (page >= games.getTotalPages()) throw new GamesException("Page number out of bounds");
 
-        if (games.isEmpty()) throw new GamesException("There is no registered games");
+        List<GameResponse> gameResponses = games.getContent().stream().map(this::toDto).toList();
 
-        return games;   
+        return new PageImpl<>(gameResponses, PageRequest.of(page, size), games.getTotalElements());
     }
 
-    public Games FindGamesById(Integer id) throws GamesException {
-        return gamesRepository.findById(id).orElseThrow(() -> new GamesException("Can't find a game with this id"));
+    public GameResponse FindGamesById(Integer id) {
+        return gamesRepository.findById(id).map(this::toDto).orElseThrow(() -> new GamesException("No game id found"));
     }
 
-    public List<Games> SearchGames(String name) throws GamesException {
-        List<Games> games = gamesRepository.findByNameContainingIgnoreCase(name);
-
-        if (games == null || games.isEmpty()) throw new GamesException("There is no registered games with this name");
-
-        return games;
+    public List<GameResponse> SearchGames(String name) {
+        return gamesRepository.findByNameContainingIgnoreCase(name).stream().map(this::toDto).toList();
     }
 
-    public List<Games> findGamesByPlatformsId(Integer platformsId) throws GamesException {
-        Platforms platform = platformsRepository.findById(platformsId)
-                .orElseThrow(() -> new GamesException("No games found with this platform id: " + platformsId));
-
-        List<Games> games = gamesRepository.findByPlatformsId(platformsId);
-
-        if (games.isEmpty()) throw new GamesException("No games found for this platform");
-
-        return games;
+    public List<GameResponse> findWishlistGamesByUser(Integer userId) {
+        Users users = usersRepository.findById(userId).orElseThrow(() -> new UserException("No user fund"));
+        return users.getWishlistGames().stream().map(this::toDto).toList();
     }
 
-    public Set<Games> findWishlistGamesByUser(Integer userId) throws GamesException {
-        Users user = usersRepository.findById(userId)
-                .orElseThrow(() -> new GamesException("User not found"));
-
-        return user.getWishlistGames();
-    }
-
-    public List<Games> findGamesByPublishersId(Integer publishersId) throws GamesException {
-        Publishers publishers = publishersRepository.findById(publishersId)
-                .orElseThrow(() -> new GamesException("No games found with this publisher id: " + publishersId));
-
-        List<Games> games = gamesRepository.findByPublishersId(publishersId);
-
-        if (games.isEmpty()) throw new GamesException("No games found for this publisher");
-
-        return games;
-    }
-
-    public List<Games> filterGames(Integer genresId, Integer platformsId, Integer publishersId) throws GamesException {
-        List<Games> games = gamesRepository.findAll();
-
-        if (genresId != null)
-            games = games.stream()
-                    .filter(g -> g.getGenres().stream()
-                            .anyMatch(genre -> genre.getId().equals(genresId)))
-                    .toList();
-
-        if (platformsId != null)
-            games = games.stream()
-                    .filter(g -> g.getPlatforms().stream()
-                            .anyMatch(platform -> platform.getId().equals(platformsId)))
-                    .toList();
-
-        if (publishersId != null)
-            games = games.stream()
-                    .filter(g -> g.getPublishers().stream()
-                            .anyMatch(publisher -> publisher.getId().equals(publishersId)))
-                    .toList();
-
-        if (games.isEmpty()) throw new GamesException("No games found with these filters");
-
-        return games;
-    }
-
+    public GameResponse toDto(Games games) { return gameMapper.toDto(games); }
 }

@@ -6,6 +6,7 @@ import com.gui.api_gameslib.entities.Games;
 import com.gui.api_gameslib.entities.Users;
 import com.gui.api_gameslib.Repositories.GamesRepository;
 import com.gui.api_gameslib.Repositories.UsersRepository;
+import com.gui.api_gameslib.exceptions.GamesException;
 import com.gui.api_gameslib.exceptions.UserException;
 
 import com.gui.api_gameslib.mappers.UserMapper;
@@ -80,7 +81,7 @@ public class UserService {
     }
 
     public void RemoveGamefromUser(Integer id, Integer gameId) {
-        Games game = gamesRepository.findById(gameId).orElseThrow(() -> new UserException("No game id found"));
+        Games game = gamesRepository.findById(gameId).orElseThrow(() -> new GamesException("No game id found"));
 
         Users user = usersRepository.findById(id).orElseThrow(() -> new UserException("No user id found"));
 

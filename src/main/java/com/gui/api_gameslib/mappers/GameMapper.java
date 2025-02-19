@@ -1,6 +1,7 @@
 package com.gui.api_gameslib.mappers;
 
-import com.gui.api_gameslib.dto.GameRequest;
+import com.gui.api_gameslib.dto.Game.GameRequest;
+import com.gui.api_gameslib.dto.Game.GameResponse;
 import com.gui.api_gameslib.entities.Games;
 import org.mapstruct.Mapper;
 
@@ -8,5 +9,5 @@ import org.mapstruct.Mapper;
 public interface GameMapper {
     Games toEntity(GameRequest gameRequest);
 
-    GameRequest toDto(Games games);
+    GameResponse toDto(Games games);
 }

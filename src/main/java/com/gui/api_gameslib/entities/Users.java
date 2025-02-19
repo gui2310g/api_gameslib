@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -35,7 +36,7 @@ public class Users {
             "image_logo", "rating", "platforms",
             "esrbRatings", "publishers", "genres", "screenshots"
     })
-    private Set<Games> WishlistGames;
+    private List<Games> WishlistGames;
 
     public Users() {}
 }
