@@ -1,6 +1,7 @@
 package com.gui.api_gameslib.mappers;
 
-import com.gui.api_gameslib.dto.UserRequest;
+import com.gui.api_gameslib.dto.user.UserRequest;
+import com.gui.api_gameslib.dto.user.UserResponse;
 import com.gui.api_gameslib.entities.Users;
 import org.mapstruct.Mapper;
 
@@ -8,5 +9,5 @@ import org.mapstruct.Mapper;
 public interface UserMapper {
     Users toEntity(UserRequest userRequest);
 
-    UserRequest toDto(Users users);
+    UserResponse toDto(Users users);
 }

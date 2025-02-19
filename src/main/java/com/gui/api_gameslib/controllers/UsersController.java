@@ -2,10 +2,11 @@ package com.gui.api_gameslib.controllers;
 
 import com.gui.api_gameslib.Services.AuthenticationService;
 import com.gui.api_gameslib.Services.UserService;
-import com.gui.api_gameslib.dto.UserRequest;
-import com.gui.api_gameslib.entities.Users;
+import com.gui.api_gameslib.dto.user.UserRequest;
+import com.gui.api_gameslib.dto.user.UserResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -20,55 +21,46 @@ public class UsersController {
     private UserService userService;
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private AuthenticationService authService;
 
     @PostMapping
-    public ResponseEntity<UserRequest> CreateUser(@RequestBody UserRequest userRequest) {
-        UserRequest createdUser = userService.CreateUser(userRequest);
-        return ResponseEntity.ok(createdUser);
+    public ResponseEntity<UserResponse> CreateUser(@RequestBody UserRequest userRequest) {
+        return ResponseEntity.ok(userService.CreateUser(userRequest));
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Users>> FindAllUsers() {
-        List<Users> users = userService.FindAllUsers();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<List<UserResponse>> FindAllUsers() {
+        return ResponseEntity.ok(userService.FindAllUsers());
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<Users> FindUserById(@PathVariable Integer id) {
-        Users selectedUser = userService.FindUserById(id);
-        return ResponseEntity.ok(selectedUser);
+    public ResponseEntity<UserResponse> FindUserById(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.FindUserById(id));
     }
 
     @PutMapping("/update")
     @SecurityRequirement(name = "Bearer Authentication")
-    public ResponseEntity<UserRequest> updateUser(@RequestBody UserRequest userRequest, Authentication authentication) {
-        Integer userId = authenticationService.getAuthenticatedUserId(authentication);
-        UserRequest updatedUser = userService.updateUser(userRequest, userId);
-        return ResponseEntity.ok(updatedUser);
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UserRequest user, Authentication auth) {
+        return ResponseEntity.ok(userService.updateUser(user, authService.getAuthenticatedUserId(auth)));
     }
 
     @DeleteMapping("/delete")
     @SecurityRequirement(name = "Bearer Authentication")
-    public ResponseEntity<UserRequest> deleteUser(UserRequest userRequest, Authentication authentication) {
-        Integer userId = authenticationService.getAuthenticatedUserId(authentication);
-        UserRequest deletedUser = userService.DeleteUser(userRequest, userId);
-        return ResponseEntity.ok(deletedUser);
+    public ResponseEntity<?> deleteUser(Authentication auth) {
+        userService.DeleteUser(authService.getAuthenticatedUserId(auth));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/wishlist/add/{gameId}")
     @SecurityRequirement(name = "Bearer Authentication")
-    public ResponseEntity<Users> addGameToUser(@PathVariable Integer gameId, Authentication authentication) {
-        Integer userId = authenticationService.getAuthenticatedUserId(authentication);
-        Users user = userService.AddGamestoUser(userId, gameId);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserResponse> addGameToUser(@PathVariable Integer gameId, Authentication auth) {
+        return ResponseEntity.ok(userService.AddGamestoUser(authService.getAuthenticatedUserId(auth), gameId));
     }
 
     @DeleteMapping("/wishlist/delete/{gameId}")
     @SecurityRequirement(name = "Bearer Authentication")
-    public ResponseEntity<Users> RemoveGamefromUser(@PathVariable Integer gameId, Authentication authentication) {
-        Integer userId = authenticationService.getAuthenticatedUserId(authentication);
-        Users user = userService.RemoveGamefromUser(userId, gameId);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<?> RemoveGamefromUser(@PathVariable Integer gameId, Authentication auth) {
+        userService.RemoveGamefromUser(authService.getAuthenticatedUserId(auth), gameId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

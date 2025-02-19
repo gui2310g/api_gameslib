@@ -1,4 +1,4 @@
-package com.gui.api_gameslib.dto;
+package com.gui.api_gameslib.dto.user;
 
 import lombok.Data;
 

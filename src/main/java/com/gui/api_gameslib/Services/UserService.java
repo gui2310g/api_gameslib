@@ -1,6 +1,7 @@
 package com.gui.api_gameslib.Services;
 
-import com.gui.api_gameslib.dto.UserRequest;
+import com.gui.api_gameslib.dto.user.UserRequest;
+import com.gui.api_gameslib.dto.user.UserResponse;
 import com.gui.api_gameslib.entities.Games;
 import com.gui.api_gameslib.entities.Users;
 import com.gui.api_gameslib.Repositories.GamesRepository;
@@ -26,96 +27,77 @@ public class UserService {
 
     private final GamesRepository gamesRepository;
 
-    public UserRequest CreateUser(UserRequest userRequest) throws UserException {
-        if (usersRepository.findByEmail(userRequest.getEmail()).isPresent())
-            throw new UserException("Email already exists");
-
+    public UserResponse CreateUser(UserRequest userRequest) {
         if (usersRepository.findByUsername(userRequest.getUsername()).isPresent())
             throw new UserException("Someone use this username");
 
+        validateEmail(userRequest, null);
+
         Users user = userMapper.toEntity(userRequest);
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        Users createdUser = usersRepository.save(user);
 
-        return userMapper.toDto(createdUser);
+        return userMapper.toDto(usersRepository.save(user));
     }
 
-    public List<Users> FindAllUsers() throws UserException {
-        List<Users> users = usersRepository.findAll();
-
-        if(users.isEmpty()) throw new UserException("There is no registered Users");
-
-        return users;
+    public List<UserResponse> FindAllUsers() {
+        return usersRepository.findAll().stream().map(this::toDto).toList();
     }
 
-    public Users FindUserById(Integer id) throws UserException {
-        return usersRepository.findById(id).orElseThrow(
-                () -> new UserException("Can't found the user with this id")
-        );
+    public UserResponse FindUserById(Integer id) {
+        return usersRepository.findById(id).map(this::toDto).orElseThrow(() -> new UserException("no user id found"));
     }
 
-    public UserRequest updateUser(UserRequest userRequest, Integer id) throws UserException {
-        Users existingUser = usersRepository.findById(id)
-                .orElseThrow(() -> new UserException("Can't find the user with this username to update"));
+    public UserResponse updateUser(UserRequest userRequest, Integer id) {
+        Users existingUser = usersRepository.findById(id).orElseThrow(() -> new UserException("User not found"));
 
-        if (usersRepository.findByEmail(userRequest.getEmail()).isPresent()
-                && !existingUser.getEmail().equals(userRequest.getEmail())) {
-            throw new UserException("This email is already in use by another user");
-        }
-
-        if (userRequest.getUsername() != null) throw new UserException("You can't update the username");
-
-        if (userRequest.getPassword() != null
-                && passwordEncoder.matches(userRequest.getPassword(), existingUser.getPassword())) {
+        if (passwordEncoder.matches(userRequest.getPassword(), existingUser.getPassword()))
             throw new UserException("You are already using this password");
-        }
 
-        if (userRequest.getUsername() != null) existingUser.setUsername(userRequest.getUsername());
-        if (userRequest.getEmail() != null) existingUser.setEmail(userRequest.getEmail());
-        if (userRequest.getPassword() != null)
-            existingUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        validateEmail(userRequest, id);
 
-        return userMapper.toDto(existingUser);
+        existingUser.setUsername(userRequest.getUsername());
+        existingUser.setEmail(userRequest.getEmail());
+        existingUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
+        return userMapper.toDto(usersRepository.save(existingUser));
     }
 
-    public UserRequest DeleteUser(UserRequest userRequest, Integer id) throws UserException {
-        Users existingUser = usersRepository.findById(id)
-                .orElseThrow(() -> new UserException("Can't find the user with this username to delete"));
 
-        usersRepository.delete(existingUser);
-
-        return userMapper.toDto(existingUser);
+    public void DeleteUser(Integer id) {
+        FindUserById(id);
+        usersRepository.deleteById(id);
     }
 
-    public Users AddGamestoUser(Integer id, Integer gameId) throws UserException {
-        Games game = gamesRepository.findById(gameId)
-                .orElseThrow(() -> new UserException("Can't find the game with this id"));
+    public UserResponse AddGamestoUser(Integer id, Integer gameId) {
+        Games game = gamesRepository.findById(gameId).orElseThrow(() -> new UserException("No game id found"));
 
-        Users existingUser = usersRepository.findById(id)
-                .orElseThrow(() -> new UserException("Can't find the user with this username to add the game"));
+        Users user = usersRepository.findById(id).orElseThrow(() -> new UserException("No user id found"));
 
-        if (existingUser.getWishlistGames().stream().anyMatch(p -> p.getId().equals(gameId)))
-            throw new UserException("This game is already added in this user");
+        if (user.getWishlistGames().contains(game)) throw new UserException("This game has already been added");
+        user.getWishlistGames().add(game);
 
-        existingUser.getWishlistGames().add(game);
-        usersRepository.save(existingUser);
-
-        return existingUser;
+        return userMapper.toDto(usersRepository.save(user));
     }
 
-    public Users RemoveGamefromUser(Integer id, Integer gameId) throws UserException {
-        Games game = gamesRepository.findById(gameId)
-                .orElseThrow(() -> new UserException("Can't find the game with this id"));
+    public void RemoveGamefromUser(Integer id, Integer gameId) {
+        Games game = gamesRepository.findById(gameId).orElseThrow(() -> new UserException("No game id found"));
 
-        Users existingUser = usersRepository.findById(id)
-                .orElseThrow(() -> new UserException("Can't find the user with this username to remove the game"));
+        Users user = usersRepository.findById(id).orElseThrow(() -> new UserException("No user id found"));
 
-        if (!existingUser.getWishlistGames().contains(game))
-            throw new UserException("This game is not added in this user");
+        if (!user.getWishlistGames().contains(game)) throw new UserException("Game is not in wishlist");
 
-        existingUser.getWishlistGames().remove(game);
-        usersRepository.save(existingUser);
+        user.getWishlistGames().remove(game);
+        usersRepository.save(user);
+    }
 
-        return existingUser;
+    public UserResponse toDto(Users users) {
+        return userMapper.toDto(users);
+    }
+
+    public void validateEmail(UserRequest dto, Integer userId) {
+        usersRepository.findByEmail(dto.getEmail()).ifPresent(existingUser -> {
+            if (!existingUser.getId().equals(userId)) throw new UserException("This email is already in use");
+            if (dto.getEmail().equals(existingUser.getEmail())) throw new UserException("You're using this email");
+        });
     }
 }
